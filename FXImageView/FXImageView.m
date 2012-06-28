@@ -179,7 +179,7 @@
         }
         else
         {
-            super.image = nil;
+            _imageView.image = nil;
         }
     }
 }
