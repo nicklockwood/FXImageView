@@ -101,3 +101,6 @@ The offset for the shadow, in points/pixels. Defaults to CGSizeZero (no shadow).
 	
 The softness of the image shadow. Defaults to zero, which creates a hard shadow.
 
+    @property (nonatomic, strong) UIImage *processedImage;
+
+The resultant image after applying reflection and shadow effects. It can sometimes be useful to set and get this directly, for example you may wish to set a placeholder image whilst the image is being processed, or retrieve and store the processed image so it can be cached for re-use later without needing to be re-generated from the original image.

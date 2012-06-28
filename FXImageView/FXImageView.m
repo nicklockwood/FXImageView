@@ -32,6 +32,7 @@
 
 #import "FXImageView.h"
 #import "UIImage+FX.h"
+#import <objc/message.h>
 
 
 @interface FXImageView ()
@@ -84,52 +85,59 @@
     return self;
 }
 
-- (void)setProcessedImage:(UIImage *)image
+- (void)setProcessedImageAnimated:(UIImage *)image
 {
+    //implement crossfade transition without needing to import QuartzCore
+    id animation = objc_msgSend(NSClassFromString(@"CATransition"), @selector(animation));
+    objc_msgSend(animation, @selector(setType:), @"kCATransitionFade");
+    objc_msgSend(self.layer, @selector(addAnimation:forKey:), animation, nil);
+    
+    //set image
     _imageView.image = image;
 }
 
 - (void)processImage:(UIImage *)image
 {
-    @synchronized ([self class])
+    @synchronized (self)
     {
-        if (image == _originalImage)
+        @autoreleasepool
         {
-            @autoreleasepool
+            if (image == _originalImage)
             {
                 //prevent premature release
                 self.selfReference = self;
-        
+                
                 //crop and scale image
-                image = [image imageCroppedAndScaledToSize:self.bounds.size
-                                               contentMode:self.contentMode
-                                                  padToFit:NO];
+                UIImage *processedImage = [image imageCroppedAndScaledToSize:self.bounds.size
+                                                                 contentMode:self.contentMode
+                                                                    padToFit:NO];
                 
                 //apply reflection
-                if (_reflectionScale > 0.0f)
+                if (image == _originalImage && _reflectionScale > 0.0f)
                 {
-                    image = [image imageWithReflectionWithScale:_reflectionScale
-                                                            gap:_reflectionGap
-                                                          alpha:_reflectionAlpha];
+                    processedImage = [processedImage imageWithReflectionWithScale:_reflectionScale
+                                                                              gap:_reflectionGap
+                                                                            alpha:_reflectionAlpha];
                 }
                 
                 //apply shadow
-                if (_shadowColor && (_shadowBlur || !CGSizeEqualToSize(_shadowOffset, CGSizeZero)))
+                if (image == _originalImage && _shadowColor &&
+                    (_shadowBlur || !CGSizeEqualToSize(_shadowOffset, CGSizeZero)))
                 {
-                    image = [image imageWithShadowColor:_shadowColor
-                                                 offset:_shadowOffset
-                                                   blur:_shadowBlur];
+                    processedImage = [processedImage imageWithShadowColor:_shadowColor
+                                                                   offset:_shadowOffset
+                                                                     blur:_shadowBlur];
                 }
                 
                 //set resultant image
                 if ([[NSThread currentThread] isMainThread])
                 {
-                    [self setProcessedImage:image];
+                    [self setProcessedImage:processedImage];
                 }
-                else
+                else if (image == _originalImage)
                 {
-                    [self performSelectorOnMainThread:@selector(setProcessedImage:)
-                                           withObject:image
+                    [self performSelectorOnMainThread:@selector(setProcessedImageAnimated:)
+                                           withObject:processedImage
                                         waitUntilDone:YES];
                 }
                 
@@ -156,6 +164,16 @@
     }
 }
 
+- (UIImage *)processedImage
+{
+    return _imageView.image;
+}
+
+- (void)setProcessedImage:(UIImage *)image
+{
+    _imageView.image = image;
+}
+
 - (UIImage *)image
 {
     return _originalImage;
@@ -179,7 +197,7 @@
         }
         else
         {
-            _imageView.image = nil;
+            self.processedImage = nil;
         }
     }
 }

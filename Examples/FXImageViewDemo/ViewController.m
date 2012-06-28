@@ -16,7 +16,6 @@
 {
     [super viewDidLoad];
 	
-    _imageView.asynchronous = YES;
     _imageView.reflectionScale = 0.5f;
     _imageView.reflectionAlpha = 0.25f;
     _imageView.reflectionGap = 10.0f;

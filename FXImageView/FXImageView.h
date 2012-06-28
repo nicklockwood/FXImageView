@@ -42,5 +42,6 @@
 @property (nonatomic, strong) UIColor *shadowColor;
 @property (nonatomic, assign) CGSize shadowOffset;
 @property (nonatomic, assign) CGFloat shadowBlur;
+@property (nonatomic, strong) UIImage *processedImage;
 
 @end
