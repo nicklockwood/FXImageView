@@ -1,7 +1,7 @@
 Purpose
 --------------
 
-FXImageView is a class designed to simplify the application of common visual effects such as reflections and drop-shadows to images, and also to help the performance of image loading by handling it on a background thread.
+FXImageView is a class designed to simplify the application of common visual effects such as reflections and drop-shadows to images. FXImageView includes sophisticated queuing and caching logic to maximise performance when rendering these effects in real time.
 
 As a bonus, FXImageView includes a standalone UIImage category for cropping, scaling and applying effects directly to an image.
 
@@ -70,6 +70,18 @@ Returns a copy of the image with a drop shadow rendered with the specified color
 Returns a copy of the image with the specified alpha (opacity). The alpha is multiplied by the image's original alpha channel, so this method can only be used to make the image more transparent, not more opaque.
 
 
+FXImageView class methods
+-----------------------
+
+    + (NSOperationQueue *)processingQueue;
+    
+This is the shared NSOperationQueue used for queuing FXImageView images for processing. You can use this method to manipulate the `maxConcurrentOperationCount` for the queue, which may be useful when fine tuning performance. The default maximum concurrent operation count is 4.
+    
+    + (NSCache *)processedImageCache;
+    
+This is the shared NSCache used to cache processed FXImageView images for reuse. iOS automatically manages clearing this cache when iOS runs low on memory, but you may wish to manipulate the `countLimit` value, or manually clear the cache at specific points in your app.
+
+
 FXImageView properties
 ----------------
 
@@ -103,4 +115,4 @@ The softness of the image shadow. Defaults to zero, which creates a hard shadow.
 
     @property (nonatomic, strong) UIImage *processedImage;
 
-The resultant image after applying reflection and shadow effects. It can sometimes be useful to set and get this directly, for example you may wish to set a placeholder image whilst the image is being processed, or retrieve and store the processed image so it can be cached for re-use later without needing to be re-generated from the original image.
+The resultant image after applying reflection and shadow effects. It can sometimes be useful to set and get this directly, for example you may wish to set a placeholder image whilst the image is being processed, or retrieve and store the processed image so it can be cached for re-use later without needing to be re-generated from the original image (note that FXImageView already includes in-memory caching of processed images).
