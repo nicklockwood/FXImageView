@@ -1,3 +1,7 @@
+Version 1.1.1
+
+- Performance improvements
+
 Version 1.1
 
 - Added LIFO queuing for process operations

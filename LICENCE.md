@@ -1,6 +1,6 @@
 FXImageView
 
-Version 1.1, June 29th, 2012
+Version 1.1.1, July 1st, 2012
 
 Copyright (C) 2011 Charcoal Design
 
