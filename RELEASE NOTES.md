@@ -1,3 +1,8 @@
+Version 1.1.2
+
+- Fixed potential crash when processingQueue maxConcurrentOperationCount is set to -1 (unlimited)
+- Added Advanced Example
+
 Version 1.1.1
 
 - Performance improvements

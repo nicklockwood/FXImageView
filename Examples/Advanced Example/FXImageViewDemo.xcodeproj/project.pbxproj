@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		01E993FE159BCA9C0059DD43 /* IMG_0150.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 01E993FD159BCA9C0059DD43 /* IMG_0150.jpg */; };
-		01E99409159BD4B30059DD43 /* FXImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E99406159BD4B30059DD43 /* FXImageView.m */; };
-		01E9940A159BD4B30059DD43 /* UIImage+FX.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E99408159BD4B30059DD43 /* UIImage+FX.m */; };
 		01FA10C2145E9951001906CB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01FA10C1145E9951001906CB /* UIKit.framework */; };
 		01FA10C4145E9951001906CB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01FA10C3145E9951001906CB /* Foundation.framework */; };
 		01FA10C6145E9951001906CB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01FA10C5145E9951001906CB /* CoreGraphics.framework */; };
@@ -18,14 +15,15 @@
 		01FA10D2145E9951001906CB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 01FA10D1145E9951001906CB /* AppDelegate.m */; };
 		01FA10D5145E9951001906CB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01FA10D4145E9951001906CB /* ViewController.m */; };
 		01FA10D8145E9951001906CB /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01FA10D6145E9951001906CB /* ViewController.xib */; };
+		B2F2748415A4555700513759 /* FXImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F2748115A4555700513759 /* FXImageView.m */; };
+		B2F2748515A4555700513759 /* UIImage+FX.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F2748315A4555700513759 /* UIImage+FX.m */; };
+		B2F2749515A4556000513759 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F2748815A4556000513759 /* iCarousel.m */; };
+		B2F274A715A4570100513759 /* Images.plist in Resources */ = {isa = PBXBuildFile; fileRef = B2F274A615A4570100513759 /* Images.plist */; };
+		B2F274A915A457C500513759 /* Lake in Resources */ = {isa = PBXBuildFile; fileRef = B2F274A815A457C500513759 /* Lake */; };
+		B2F274AB15A4588000513759 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2F274AA15A4588000513759 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		01E993FD159BCA9C0059DD43 /* IMG_0150.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IMG_0150.jpg; sourceTree = "<group>"; };
-		01E99405159BD4B30059DD43 /* FXImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXImageView.h; sourceTree = "<group>"; };
-		01E99406159BD4B30059DD43 /* FXImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXImageView.m; sourceTree = "<group>"; };
-		01E99407159BD4B30059DD43 /* UIImage+FX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+FX.h"; sourceTree = "<group>"; };
-		01E99408159BD4B30059DD43 /* UIImage+FX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+FX.m"; sourceTree = "<group>"; };
 		01FA10BD145E9951001906CB /* FXImageViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FXImageViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01FA10C1145E9951001906CB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		01FA10C3145E9951001906CB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -39,6 +37,15 @@
 		01FA10D3145E9951001906CB /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		01FA10D4145E9951001906CB /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		01FA10D7145E9951001906CB /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
+		B2F2748015A4555700513759 /* FXImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXImageView.h; sourceTree = "<group>"; };
+		B2F2748115A4555700513759 /* FXImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXImageView.m; sourceTree = "<group>"; };
+		B2F2748215A4555700513759 /* UIImage+FX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+FX.h"; sourceTree = "<group>"; };
+		B2F2748315A4555700513759 /* UIImage+FX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+FX.m"; sourceTree = "<group>"; };
+		B2F2748715A4556000513759 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
+		B2F2748815A4556000513759 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
+		B2F274A615A4570100513759 /* Images.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Images.plist; sourceTree = "<group>"; };
+		B2F274A815A457C500513759 /* Lake */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Lake; path = ../Lake; sourceTree = "<group>"; };
+		B2F274AA15A4588000513759 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2F274AB15A4588000513759 /* QuartzCore.framework in Frameworks */,
 				01FA10C2145E9951001906CB /* UIKit.framework in Frameworks */,
 				01FA10C4145E9951001906CB /* Foundation.framework in Frameworks */,
 				01FA10C6145E9951001906CB /* CoreGraphics.framework in Frameworks */,
@@ -55,22 +63,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		01E99404159BD4B30059DD43 /* FXImageView */ = {
-			isa = PBXGroup;
-			children = (
-				01E99407159BD4B30059DD43 /* UIImage+FX.h */,
-				01E99408159BD4B30059DD43 /* UIImage+FX.m */,
-				01E99405159BD4B30059DD43 /* FXImageView.h */,
-				01E99406159BD4B30059DD43 /* FXImageView.m */,
-			);
-			name = FXImageView;
-			path = ../FXImageView;
-			sourceTree = "<group>";
-		};
 		01FA10B2145E994F001906CB = {
 			isa = PBXGroup;
 			children = (
-				01E99404159BD4B30059DD43 /* FXImageView */,
+				B2F2748615A4556000513759 /* iCarousel */,
+				B2F2747F15A4555700513759 /* FXImageView */,
 				01FA10C7145E9951001906CB /* FXImageViewDemo */,
 				01FA10C0145E9951001906CB /* Frameworks */,
 				01FA10BE145E9951001906CB /* Products */,
@@ -91,6 +88,7 @@
 				01FA10C1145E9951001906CB /* UIKit.framework */,
 				01FA10C3145E9951001906CB /* Foundation.framework */,
 				01FA10C5145E9951001906CB /* CoreGraphics.framework */,
+				B2F274AA15A4588000513759 /* QuartzCore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -103,6 +101,7 @@
 				01FA10D3145E9951001906CB /* ViewController.h */,
 				01FA10D4145E9951001906CB /* ViewController.m */,
 				01FA10D6145E9951001906CB /* ViewController.xib */,
+				B2F274A815A457C500513759 /* Lake */,
 				01FA10C8145E9951001906CB /* Supporting Files */,
 			);
 			path = FXImageViewDemo;
@@ -111,13 +110,34 @@
 		01FA10C8145E9951001906CB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				01E993FD159BCA9C0059DD43 /* IMG_0150.jpg */,
+				B2F274A615A4570100513759 /* Images.plist */,
 				01FA10C9145E9951001906CB /* FXImageViewDemo-Info.plist */,
 				01FA10CA145E9951001906CB /* InfoPlist.strings */,
 				01FA10CD145E9951001906CB /* main.m */,
 				01FA10CF145E9951001906CB /* FXImageViewDemo-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B2F2747F15A4555700513759 /* FXImageView */ = {
+			isa = PBXGroup;
+			children = (
+				B2F2748015A4555700513759 /* FXImageView.h */,
+				B2F2748115A4555700513759 /* FXImageView.m */,
+				B2F2748215A4555700513759 /* UIImage+FX.h */,
+				B2F2748315A4555700513759 /* UIImage+FX.m */,
+			);
+			name = FXImageView;
+			path = ../../FXImageView;
+			sourceTree = "<group>";
+		};
+		B2F2748615A4556000513759 /* iCarousel */ = {
+			isa = PBXGroup;
+			children = (
+				B2F2748715A4556000513759 /* iCarousel.h */,
+				B2F2748815A4556000513759 /* iCarousel.m */,
+			);
+			path = iCarousel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -172,7 +192,8 @@
 			files = (
 				01FA10CC145E9951001906CB /* InfoPlist.strings in Resources */,
 				01FA10D8145E9951001906CB /* ViewController.xib in Resources */,
-				01E993FE159BCA9C0059DD43 /* IMG_0150.jpg in Resources */,
+				B2F274A715A4570100513759 /* Images.plist in Resources */,
+				B2F274A915A457C500513759 /* Lake in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -186,8 +207,9 @@
 				01FA10CE145E9951001906CB /* main.m in Sources */,
 				01FA10D2145E9951001906CB /* AppDelegate.m in Sources */,
 				01FA10D5145E9951001906CB /* ViewController.m in Sources */,
-				01E99409159BD4B30059DD43 /* FXImageView.m in Sources */,
-				01E9940A159BD4B30059DD43 /* UIImage+FX.m in Sources */,
+				B2F2748415A4555700513759 /* FXImageView.m in Sources */,
+				B2F2748515A4555700513759 /* UIImage+FX.m in Sources */,
+				B2F2749515A4556000513759 /* iCarousel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
