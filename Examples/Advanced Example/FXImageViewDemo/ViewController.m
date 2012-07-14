@@ -11,7 +11,7 @@
 
 @interface ViewController ()
 
-@property (nonatomic, strong) NSMutableArray *images;
+@property (nonatomic, strong) NSMutableArray *imagePaths;
 
 @end
 
@@ -19,22 +19,15 @@
 @implementation ViewController
 
 @synthesize carousel = _carousel;
-@synthesize images = _images;
+@synthesize imagePaths = _imagePaths;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]))
     {
-        //get image URLs
+        //get image paths
         NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"Images" ofType:@"plist"];
-        NSArray *imagePaths = [NSArray arrayWithContentsOfFile:plistPath];
-        
-        //load images
-        _images = [[NSMutableArray alloc] init];
-        for (NSString *path in imagePaths)
-        {
-            [_images addObject:[UIImage imageNamed:path]];
-        }
+        self.imagePaths = [NSArray arrayWithContentsOfFile:plistPath];
     }
     return self;
 }
@@ -49,7 +42,7 @@
 
 - (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
-    return [_images count];
+    return [_imagePaths count];
 }
 
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view
@@ -68,8 +61,8 @@
         view = imageView;
     }
     
-    //set image
-    ((FXImageView *)view).image = [_images objectAtIndex:index];
+    //load image
+    [(FXImageView *)view setImageWithContentsOfFile:[_imagePaths objectAtIndex:index]];
     
     return view;
 }
@@ -83,7 +76,7 @@
 - (void)dealloc
 {
     [_carousel release];
-    [_images release];
+    [_imagePaths release];
     [super dealloc];
 }
 

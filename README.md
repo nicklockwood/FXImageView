@@ -82,6 +82,26 @@ This is the shared NSOperationQueue used for queuing FXImageView images for proc
 This is the shared NSCache used to cache processed FXImageView images for reuse. iOS automatically manages clearing this cache when iOS runs low on memory, but you may wish to manipulate the `countLimit` value, or manually clear the cache at specific points in your app.
 
 
+FXImageView methods
+------------------
+
+    - (void)setImage:(UIImage *)image;
+    
+This method is the setter method for the image property. See the image property documentation below.
+    
+    - (void)setImageWithContentsOfFile:(NSString *)file;
+    
+This method sets the image by loading it from the specified file. If the specified file is not an absolute path it is assumed to be a relative path within with the application bundle resources directory. If the file does not include an extension it is assumed to be a PNG. If the `asynchronous` property is set, the file will be loaded on a background thread.
+    
+    - (void)setImageWithContentsOfURL:(NSURL *)URL;
+    
+This method sets the image by loading it from the specified URL. If the `asynchronous` property is enabled, the image will be loaded on a background thread. The specified URL can be either a local or remote file, but note that loading remote URLs in synchronous mode is not recommended as it will block the main thread for an indeterminate time.
+    
+    - (void)setImageWithBlock:(UIImage *(^)(void))block;
+    
+This method sets the image by executing a block that will load or generate it according to whatever logic you specify. The primary benefit of this method is that in asynchronous mode, the loading will be queued and executed on a background thread, allowing you to provide bespoke loading logic without affecting performance. Note that you should ensure that your loading code is thread-safe if used in asynchronous mode.
+    
+
 FXImageView properties
 ----------------
 
@@ -113,6 +133,18 @@ The offset for the shadow, in points/pixels. Defaults to CGSizeZero (no shadow).
 	
 The softness of the image shadow. Defaults to zero, which creates a hard shadow.
 
+    @property (nonatomic, strong) UIImage *image;
+    
+This property is inherited from UIImageView, but the behaviour is different. Setting this property does not set the image directly but instead applies the specified effects and then displays the processed image. If the `asynchronous` property is set, this processing happens in a background thread, so the image will not appear immediately. Accessing the image property getter will return the original, unprocessed image.
+
     @property (nonatomic, strong) UIImage *processedImage;
 
 The resultant image after applying reflection and shadow effects. It can sometimes be useful to set and get this directly, for example you may wish to set a placeholder image whilst the image is being processed, or retrieve and store the processed image so it can be cached for re-use later without needing to be re-generated from the original image (note that FXImageView already includes in-memory caching of processed images).
+
+    @property (nonatomic, copy) UIImage *(^customEffectsBlock)(UIImage *image);
+    
+If you want to apply a custom effect to your image, you can do your custom drawing using the `customEffectsBlock` property. The block is passed the correctly cropped and scaled image, and you code should return a new version with your custom effects applied. Your custom drawing block is applied prior to any other effects (apart from cropping and scaling).   FXImageView's caching mechanism doesn't know about your custom effects, so if your app uses multiple effects blocks, or your block relies on any external data, you should update the `customEffectsIdentifier` property so that the FXImageView cache can handle it correctly. Note that you should ensure that your block code is thread-safe if used in asynchronous mode.
+     
+    @property (nonatomic, copy) NSDictionary *customEffectsIdentifier;
+    
+If you are using the `customEffectsBlock` property, FXImageView's caching mechanism doesn't know about your custom effects, so if your block relies on any external data you should update the `customEffectsIdentifier` property so that the FXImageView cache can handle it correctly. The customEffectsIdentifier is just a string used to generate a cache key, so it doesn't matter what you put in it as long as it uniquely distinguishes the effects you are applying to this image from any other.

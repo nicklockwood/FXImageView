@@ -1,3 +1,9 @@
+Version 1.2 beta
+
+- Added custom effects block property for applying custom effects
+- Added setWithContentsOfFile/URL: methods for dynamic loading/downloading
+- Added setWithBlock: method for dynamic image generation or loading logic
+
 Version 1.1.2
 
 - Fixed potential crash when processingQueue maxConcurrentOperationCount is set to -1 (unlimited)

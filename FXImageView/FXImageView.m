@@ -1,7 +1,7 @@
 //
 //  FXImageView.m
 //
-//  Version 1.1.2
+//  Version 1.2 beta
 //
 //  Created by Nick Lockwood on 31/10/2011.
 //  Copyright (c) 2011 Charcoal Design
@@ -42,11 +42,18 @@
 @end
 
 
+@interface FXImageBlockOperation : FXImageOperation
+
+@property (nonatomic, copy) UIImage *(^block)(void);
+
+@end
+
+
 @interface FXImageView ()
 
 @property (nonatomic, strong) UIImage *originalImage;
 @property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong) NSOperation *operation;
+@property (nonatomic, strong) NSURL *imageURL;
 
 - (void)processImage;
 
@@ -78,6 +85,32 @@
 @end
 
 
+@implementation FXImageBlockOperation
+
+@synthesize block = _block;
+
+- (void)main
+{
+    @autoreleasepool
+    {
+        self.target.image = _block();
+        [super main];
+    }
+}
+
+#if !__has_feature(objc_arc)
+
+- (void)dealloc
+{
+    [_block release];
+    [super dealloc];
+}
+
+#endif
+
+@end
+
+
 @implementation FXImageView
 
 @synthesize asynchronous = _asynchronous;
@@ -88,8 +121,12 @@
 @synthesize shadowOffset = _shadowOffset;
 @synthesize shadowBlur = _shadowBlur;
 
+@synthesize customEffectsBlock = _customEffectsBlock;
+@synthesize customEffectsIdentifier = _customEffectsIdentifier;
+
 @synthesize originalImage = _originalImage;
 @synthesize imageView = _imageView;
+@synthesize imageURL = _imageURL;
 
 
 #pragma mark -
@@ -152,9 +189,12 @@
 
 - (void)dealloc
 {
+    [_customEffectsBlock release];
+    [_customEffectsIdentifier release];
     [_originalImage release];
     [_shadowColor release];
     [_imageView release];
+    [_imageURL release];
     [super dealloc];    
 }
 
@@ -183,16 +223,22 @@
 
 - (NSString *)cacheKey
 {
-    return [NSString stringWithFormat:@"%i_%@_%.2f_%.2f_%.2f_%@_%@_%.2f_%i",
-            (int)_originalImage,
-            NSStringFromCGSize(self.bounds.size),
-            _reflectionGap,
-            _reflectionScale,
-            _reflectionAlpha,
-            [self colorString:_shadowColor],
-            NSStringFromCGSize(_shadowOffset),
-            _shadowBlur,
-            self.contentMode];
+    NSString *key = [NSString stringWithFormat:@"%@_%@_%.2f_%.2f_%.2f_%@_%@_%.2f_%i",
+                     _imageURL ?: _originalImage,
+                     NSStringFromCGSize(self.bounds.size),
+                     _reflectionGap,
+                     _reflectionScale,
+                     _reflectionAlpha,
+                     [self colorString:_shadowColor],
+                     NSStringFromCGSize(_shadowOffset),
+                     _shadowBlur,
+                     self.contentMode];
+                     
+    if (_customEffectsBlock)
+    {
+        key = [key stringByAppendingFormat:@"_%@", _customEffectsIdentifier];
+    }
+    return key;
 }
 
 - (UIImage *)cachedProcessedImage
@@ -231,6 +277,7 @@
     //get properties
     NSString *cacheKey = [self cacheKey];
     UIImage *image = self.image;
+    NSURL *imageURL = _imageURL;
     CGSize size = self.bounds.size;
     CGFloat reflectionGap = _reflectionGap;
     CGFloat reflectionScale = _reflectionScale;
@@ -244,10 +291,48 @@
     UIImage *processedImage = [self cachedProcessedImage];
     if (!processedImage)
     {
+        //load image
+        if (_imageURL)
+        {
+            NSURLRequest *request = [NSURLRequest requestWithURL:imageURL cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:30.0];
+            NSError *error = nil;
+            NSURLResponse *response = nil;
+            NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+            if (error)
+            {
+                NSLog(@"Error loading image for URL: %@, %@", imageURL, error);
+                return;
+            }
+            else
+            {
+                image = [UIImage imageWithData:data];
+                if ([[[imageURL path] stringByDeletingPathExtension] hasSuffix:@"@2x"])
+                {
+                    image = [UIImage imageWithCGImage:image.CGImage scale:2.0f orientation:UIImageOrientationUp];
+                }
+            }
+        }
+        
         //crop and scale image
         processedImage = [image imageCroppedAndScaledToSize:size
                                                 contentMode:contentMode
                                                    padToFit:NO];
+        
+        //apply custom processing
+        if (_customEffectsBlock)
+        {
+            processedImage = _customEffectsBlock(processedImage);
+        }
+        
+        //apply shadow
+        if (shadowColor && ![shadowColor isEqual:[UIColor clearColor]] &&
+            (shadowBlur || !CGSizeEqualToSize(shadowOffset, CGSizeZero)))
+        {
+            reflectionGap -= 2.0f * (fabsf(shadowOffset.height) + shadowBlur);
+            processedImage = [processedImage imageWithShadowColor:shadowColor
+                                                           offset:shadowOffset
+                                                             blur:shadowBlur];
+        }
         
         //apply reflection
         if (self.reflectionScale && self.reflectionAlpha)
@@ -255,15 +340,6 @@
             processedImage = [processedImage imageWithReflectionWithScale:reflectionScale
                                                                       gap:reflectionGap
                                                                     alpha:reflectionAlpha];
-        }
-        
-        //apply shadow
-        if (shadowColor && ![shadowColor isEqual:[UIColor clearColor]] &&
-            (shadowBlur || !CGSizeEqualToSize(shadowOffset, CGSizeZero)))
-        {
-            processedImage = [processedImage imageWithShadowColor:shadowColor
-                                                           offset:shadowOffset
-                                                             blur:shadowBlur];
         }
     }
     
@@ -284,7 +360,7 @@
     }
 }
 
-- (void)queueImageForProcessing
+- (void)queueProcessingOperation:(FXImageOperation *)operation
 {
     //suspend operation queue
     NSOperationQueue *queue = [[self class] processingQueue];
@@ -303,13 +379,6 @@
             }
         }
     }
-
-    //create processing operation
-    FXImageOperation *operation = [[FXImageOperation alloc] init];
-    operation.target = self;
-    
-    //set operation thread priority
-    [operation setThreadPriority:1.0];
     
     //make op a dependency of all queued ops
     NSInteger maxOperations = ([queue maxConcurrentOperationCount] > 0) ? [queue maxConcurrentOperationCount]: INT_MAX;
@@ -328,6 +397,19 @@
     
     //resume queue
     [queue setSuspended:NO];
+}
+
+- (void)queueImageForProcessing
+{
+    //create processing operation
+    FXImageOperation *operation = [[FXImageOperation alloc] init];
+    operation.target = self;
+    
+    //set operation thread priority
+    [operation setThreadPriority:1.0];
+    
+    //queue operation
+    [self queueProcessingOperation:operation];
     
 #if !__has_feature(objc_arc)
 
@@ -340,7 +422,7 @@
 - (void)layoutSubviews
 {
     _imageView.frame = self.bounds;
-    if (self.image)
+    if (_imageURL || self.image)
     {
         UIImage *processedImage = [self cachedProcessedImage];
         if (processedImage)
@@ -383,7 +465,7 @@
 
 - (void)setImage:(UIImage *)image
 {
-    if (image != _originalImage)
+    if (![_originalImage isEqual:image])
     {
         self.originalImage = image;
         if (image)
@@ -442,7 +524,7 @@
 
 - (void)setShadowColor:(UIColor *)shadowColor
 {
-    if (_shadowColor != shadowColor)
+    if (![_shadowColor isEqual:shadowColor])
     {
         
 #if !__has_feature(objc_arc)
@@ -484,6 +566,103 @@
     {
         super.contentMode = contentMode;
         [self setNeedsLayout];
+    }
+}
+
+- (void)setCustomEffectsBlock:(UIImage *(^)(UIImage *))customEffectsBlock
+{
+    if (![customEffectsBlock isEqual:_customEffectsBlock])
+    {
+        _customEffectsBlock = [customEffectsBlock copy];
+        [self setNeedsLayout];
+    }
+}
+
+- (void)setCustomEffectsIdentifier:(NSString *)customEffectsIdentifier
+{
+    if (![customEffectsIdentifier isEqual:_customEffectsIdentifier])
+    {
+        _customEffectsIdentifier = [customEffectsIdentifier copy];
+        [self setNeedsLayout];
+    }
+}
+
+
+#pragma mark -
+#pragma mark loading
+
+- (void)setImageWithContentsOfFile:(NSString *)file
+{
+    if ([[file pathExtension] length] == 0)
+    {
+        file = [file stringByAppendingPathExtension:@"png"];
+    }
+    if (![file isAbsolutePath])
+    {
+        file = [[NSBundle mainBundle] pathForResource:file ofType:nil];
+    }
+    if ([UIScreen mainScreen].scale == 2.0f)
+    {
+        NSString *temp = [[[file stringByDeletingPathExtension] stringByAppendingString:@"@2x"] stringByAppendingPathExtension:[file pathExtension]];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:temp])
+        {
+            file = temp;
+        }
+    }
+    [self setImageWithContentsOfURL:[NSURL fileURLWithPath:file]];
+}
+
+- (void)setImageWithContentsOfURL:(NSURL *)URL
+{
+    if (![URL isEqual:_imageURL])
+    {
+        //clear current image
+        self.imageURL = URL;
+        self.originalImage = nil;
+        
+        if (_asynchronous)
+        {
+            [self setNeedsLayout];
+        }
+        else
+        {
+            //load image directly
+            NSData *data = [NSData dataWithContentsOfURL:URL];
+            self.image = [UIImage imageWithData:data];
+        }
+    }
+}
+
+- (void)setImageWithBlock:(UIImage *(^)(void))block
+{
+    //clear current image
+    self.originalImage = nil;
+    self.imageURL = nil;
+    
+    if (_asynchronous)
+    {
+        //create block operation
+        FXImageBlockOperation *operation = [[FXImageBlockOperation alloc] init];
+        operation.target = self;
+        operation.block = block;
+        
+        //set operation thread priority
+        [operation setThreadPriority:1.0];
+        
+        //queue operation
+        [self queueProcessingOperation:operation];
+        
+    #if !__has_feature(objc_arc)
+        
+        [operation release];
+        
+    #endif
+    
+    }
+    else
+    {
+        //set image directly
+        self.image = block();
     }
 }
 
