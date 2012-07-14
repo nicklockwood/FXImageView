@@ -65,6 +65,10 @@ Returns a copy of the image that includes a reflection with the specified scale,
     
 Returns a copy of the image with a drop shadow rendered with the specified color, offset and blur. Regardless of the offset value, the original image will be vertically centered within the new image to make it easier to position the image within a UIImageView.
 
+    - (UIImage *)imageWithCornerRadius:(CGFloat)radius;
+
+Returns a copy of the image with the corners clipped to the specified curvature radius.
+
     - (UIImage *)imageWithAlpha:(CGFloat)alpha;
 
 Returns a copy of the image with the specified alpha (opacity). The alpha is multiplied by the image's original alpha channel, so this method can only be used to make the image more transparent, not more opaque.
@@ -133,6 +137,10 @@ The offset for the shadow, in points/pixels. Defaults to CGSizeZero (no shadow).
 	
 The softness of the image shadow. Defaults to zero, which creates a hard shadow.
 
+    @property (nonatomic, assign) CGFloat cornerRadius;
+
+The radius of the curved corner clipping. Set this to zero to disable curved corners.
+
     @property (nonatomic, strong) UIImage *image;
     
 This property is inherited from UIImageView, but the behaviour is different. Setting this property does not set the image directly but instead applies the specified effects and then displays the processed image. If the `asynchronous` property is set, this processing happens in a background thread, so the image will not appear immediately. Accessing the image property getter will return the original, unprocessed image.
@@ -147,4 +155,4 @@ If you want to apply a custom effect to your image, you can do your custom drawi
      
     @property (nonatomic, copy) NSDictionary *customEffectsIdentifier;
     
-If you are using the `customEffectsBlock` property, FXImageView's caching mechanism doesn't know about your custom effects, so if your block relies on any external data you should update the `customEffectsIdentifier` property so that the FXImageView cache can handle it correctly. The customEffectsIdentifier is just a string used to generate a cache key, so it doesn't matter what you put in it as long as it uniquely distinguishes the effects you are applying to this image from any other.
+If you are using the `customEffectsBlock` property, FXImageView's caching mechanism doesn't know about your custom effects and doesn't know if they need to change, so if your block relies on any external data you should update the `customEffectsIdentifier` property so that the FXImageView cache can handle it correctly. The customEffectsIdentifier is just a string used to generate a cache key, so it doesn't matter what you put in it as long as it uniquely distinguishes the effects you are applying to this image from any other.

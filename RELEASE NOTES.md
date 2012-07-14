@@ -1,5 +1,6 @@
-Version 1.2 beta
+Version 1.2
 
+- Added corner radius clipping effect
 - Added custom effects block property for applying custom effects
 - Added setWithContentsOfFile/URL: methods for dynamic loading/downloading
 - Added setWithBlock: method for dynamic image generation or loading logic

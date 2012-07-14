@@ -11,7 +11,7 @@
 
 @interface ViewController ()
 
-@property (nonatomic, strong) NSMutableArray *imagePaths;
+@property (nonatomic, strong) NSArray *imagePaths;
 
 @end
 
@@ -26,8 +26,7 @@
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]))
     {
         //get image paths
-        NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"Images" ofType:@"plist"];
-        self.imagePaths = [NSArray arrayWithContentsOfFile:plistPath];
+        self.imagePaths = [[NSBundle mainBundle] pathsForResourcesOfType:@"jpg" inDirectory:@"Lake"];
     }
     return self;
 }
@@ -58,6 +57,7 @@
         imageView.reflectionGap = 10.0f;
         imageView.shadowOffset = CGSizeMake(0.0f, 2.0f);
         imageView.shadowBlur = 5.0f;
+        imageView.cornerRadius = 10.0f;
         view = imageView;
     }
     

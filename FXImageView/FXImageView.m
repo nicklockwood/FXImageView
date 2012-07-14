@@ -1,7 +1,7 @@
 //
 //  FXImageView.m
 //
-//  Version 1.2 beta
+//  Version 1.2
 //
 //  Created by Nick Lockwood on 31/10/2011.
 //  Copyright (c) 2011 Charcoal Design
@@ -120,6 +120,7 @@
 @synthesize shadowColor = _shadowColor;
 @synthesize shadowOffset = _shadowOffset;
 @synthesize shadowBlur = _shadowBlur;
+@synthesize cornerRadius = _cornerRadius;
 
 @synthesize customEffectsBlock = _customEffectsBlock;
 @synthesize customEffectsIdentifier = _customEffectsIdentifier;
@@ -223,7 +224,7 @@
 
 - (NSString *)cacheKey
 {
-    NSString *key = [NSString stringWithFormat:@"%@_%@_%.2f_%.2f_%.2f_%@_%@_%.2f_%i",
+    NSString *key = [NSString stringWithFormat:@"%@_%@_%.2f_%.2f_%.2f_%@_%@_%.2f_%.2f_%i",
                      _imageURL ?: _originalImage,
                      NSStringFromCGSize(self.bounds.size),
                      _reflectionGap,
@@ -232,6 +233,7 @@
                      [self colorString:_shadowColor],
                      NSStringFromCGSize(_shadowOffset),
                      _shadowBlur,
+                     _cornerRadius,
                      self.contentMode];
                      
     if (_customEffectsBlock)
@@ -322,6 +324,12 @@
         if (_customEffectsBlock)
         {
             processedImage = _customEffectsBlock(processedImage);
+        }
+        
+        //clip corners
+        if (_cornerRadius)
+        {
+            processedImage = [processedImage imageWithCornerRadius:_cornerRadius];
         }
         
         //apply shadow
