@@ -177,6 +177,24 @@
     return self;
 }
 
+- (id)initWithImage:(UIImage *)image
+{
+    if ((self = [super initWithImage:image]))
+    {
+        [self setUp];
+    }
+    return self;
+}
+
+- (id)initWithImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage
+{
+    if ((self = [super initWithImage:image highlightedImage:highlightedImage]))
+    {
+        [self setUp];
+    }
+    return self;
+}
+
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     if ((self = [super initWithCoder:aDecoder]))
