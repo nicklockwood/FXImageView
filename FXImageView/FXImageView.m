@@ -53,7 +53,7 @@
 
 @property (nonatomic, strong) UIImage *originalImage;
 @property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong) NSURL *imageURL;
+@property (nonatomic, strong) NSURL *imageContentURL;
 
 - (void)processImage;
 
@@ -127,7 +127,7 @@
 
 @synthesize originalImage = _originalImage;
 @synthesize imageView = _imageView;
-@synthesize imageURL = _imageURL;
+@synthesize imageContentURL = _imageContentURL;
 
 
 #pragma mark -
@@ -213,7 +213,7 @@
     [_originalImage release];
     [_shadowColor release];
     [_imageView release];
-    [_imageURL release];
+    [_imageContentURL release];
     [super dealloc];    
 }
 
@@ -243,7 +243,7 @@
 - (NSString *)cacheKey
 {
     NSString *key = [NSString stringWithFormat:@"%@_%@_%.2f_%.2f_%.2f_%@_%@_%.2f_%.2f_%i",
-                     _imageURL ?: _originalImage,
+                     _imageContentURL ?: _originalImage,
                      NSStringFromCGSize(self.bounds.size),
                      _reflectionGap,
                      _reflectionScale,
@@ -253,7 +253,7 @@
                      _shadowBlur,
                      _cornerRadius,
                      self.contentMode];
-                     
+    
     if (_customEffectsBlock)
     {
         key = [key stringByAppendingFormat:@"_%@", _customEffectsIdentifier];
@@ -297,7 +297,7 @@
     //get properties
     NSString *cacheKey = [self cacheKey];
     UIImage *image = self.image;
-    NSURL *imageURL = _imageURL;
+    NSURL *imageURL = _imageContentURL;
     CGSize size = self.bounds.size;
     CGFloat reflectionGap = _reflectionGap;
     CGFloat reflectionScale = _reflectionScale;
@@ -312,7 +312,7 @@
     if (!processedImage)
     {
         //load image
-        if (_imageURL)
+        if (_imageContentURL)
         {
             NSURLRequest *request = [NSURLRequest requestWithURL:imageURL cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:30.0];
             NSError *error = nil;
@@ -438,7 +438,7 @@
     [self queueProcessingOperation:operation];
     
 #if !__has_feature(objc_arc)
-
+    
     [operation release];
     
 #endif
@@ -448,7 +448,7 @@
 - (void)layoutSubviews
 {
     _imageView.frame = self.bounds;
-    if (_imageURL || self.image)
+    if (_imageContentURL || self.image)
     {
         UIImage *processedImage = [self cachedProcessedImage];
         if (processedImage)
@@ -640,10 +640,10 @@
 
 - (void)setImageWithContentsOfURL:(NSURL *)URL
 {
-    if (![URL isEqual:_imageURL])
+    if (![URL isEqual:_imageContentURL])
     {
         //clear current image
-        self.imageURL = URL;
+        self.imageContentURL = URL;
         self.originalImage = nil;
         
         if (_asynchronous)
@@ -663,7 +663,7 @@
 {
     //clear current image
     self.originalImage = nil;
-    self.imageURL = nil;
+    self.imageContentURL = nil;
     
     if (_asynchronous)
     {
@@ -678,12 +678,12 @@
         //queue operation
         [self queueProcessingOperation:operation];
         
-    #if !__has_feature(objc_arc)
+#if !__has_feature(objc_arc)
         
         [operation release];
         
-    #endif
-    
+#endif
+        
     }
     else
     {
