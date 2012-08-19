@@ -73,6 +73,14 @@ Returns a copy of the image with the corners clipped to the specified curvature 
 
 Returns a copy of the image with the specified alpha (opacity). The alpha is multiplied by the image's original alpha channel, so this method can only be used to make the image more transparent, not more opaque.
 
+    - (UIImage *)imageWithMask:(UIImage *)maskImage;
+    
+Clips the image using the specified mask image. The mask image should be an opaque, greyscale alpha mask. If you wish to use a transparent mask image, use the `maskImageFromImageAlpha` method to convert it to the correct format.
+    
+    - (UIImage *)maskImageFromImageAlpha;
+
+This method extracts the alpha channel from an image that has an embedded alpha mask and returns it as a standalone greyscale mask image, suitable for use with the `imageWithMask:` method.
+
 
 FXImageView class methods
 -----------------------
@@ -100,11 +108,7 @@ This method sets the image by loading it from the specified file. If the specifi
     - (void)setImageWithContentsOfURL:(NSURL *)URL;
     
 This method sets the image by loading it from the specified URL. If the `asynchronous` property is enabled, the image will be loaded on a background thread. The specified URL can be either a local or remote file, but note that loading remote URLs in synchronous mode is not recommended as it will block the main thread for an indeterminate time.
-    
-    - (void)setImageWithBlock:(UIImage *(^)(void))block;
-    
-This method sets the image by executing a block that will load or generate it according to whatever logic you specify. The primary benefit of this method is that in asynchronous mode, the loading will be queued and executed on a background thread, allowing you to provide bespoke loading logic without affecting performance. Note that you should ensure that your loading code is thread-safe if used in asynchronous mode.
-    
+
 
 FXImageView properties
 ----------------

@@ -1,7 +1,7 @@
 //
 //  FXImageView.m
 //
-//  Version 1.2
+//  Version 1.2.1
 //
 //  Created by Nick Lockwood on 31/10/2011.
 //  Copyright (c) 2011 Charcoal Design
@@ -42,13 +42,6 @@
 @end
 
 
-@interface FXImageBlockOperation : FXImageOperation
-
-@property (nonatomic, copy) UIImage *(^block)(void);
-
-@end
-
-
 @interface FXImageView ()
 
 @property (nonatomic, strong) UIImage *originalImage;
@@ -77,32 +70,6 @@
 - (void)dealloc
 {
     [_target release];
-    [super dealloc];
-}
-
-#endif
-
-@end
-
-
-@implementation FXImageBlockOperation
-
-@synthesize block = _block;
-
-- (void)main
-{
-    @autoreleasepool
-    {
-        self.target.image = _block();
-        [super main];
-    }
-}
-
-#if !__has_feature(objc_arc)
-
-- (void)dealloc
-{
-    [_block release];
     [super dealloc];
 }
 
@@ -275,9 +242,13 @@
     //get images
     NSString *cacheKey = [images objectAtIndex:1];
     UIImage *processedImage = [images objectAtIndex:0];
+    processedImage = ([processedImage isKindOfClass:[NSNull class]])? nil: processedImage;
     
-    //cache image
-    [[[self class] processedImageCache] setObject:processedImage forKey:cacheKey];
+    if (processedImage)
+    {
+        //cache image
+        [[[self class] processedImageCache] setObject:processedImage forKey:cacheKey];
+    }
     
     //set image
     if ([[self cacheKey] isEqualToString:cacheKey])
@@ -333,56 +304,59 @@
             }
         }
         
-        //crop and scale image
-        processedImage = [image imageCroppedAndScaledToSize:size
-                                                contentMode:contentMode
-                                                   padToFit:NO];
-        
-        //apply custom processing
-        if (_customEffectsBlock)
+        if (image)
         {
-            processedImage = _customEffectsBlock(processedImage);
-        }
-        
-        //clip corners
-        if (_cornerRadius)
-        {
-            processedImage = [processedImage imageWithCornerRadius:_cornerRadius];
-        }
-        
-        //apply shadow
-        if (shadowColor && ![shadowColor isEqual:[UIColor clearColor]] &&
-            (shadowBlur || !CGSizeEqualToSize(shadowOffset, CGSizeZero)))
-        {
-            reflectionGap -= 2.0f * (fabsf(shadowOffset.height) + shadowBlur);
-            processedImage = [processedImage imageWithShadowColor:shadowColor
-                                                           offset:shadowOffset
-                                                             blur:shadowBlur];
-        }
-        
-        //apply reflection
-        if (self.reflectionScale && self.reflectionAlpha)
-        {
-            processedImage = [processedImage imageWithReflectionWithScale:reflectionScale
-                                                                      gap:reflectionGap
-                                                                    alpha:reflectionAlpha];
+            //crop and scale image
+            processedImage = [image imageCroppedAndScaledToSize:size
+                                                    contentMode:contentMode
+                                                       padToFit:NO];
+            
+            //apply custom processing
+            if (_customEffectsBlock)
+            {
+                processedImage = _customEffectsBlock(processedImage);
+            }
+            
+            //clip corners
+            if (_cornerRadius)
+            {
+                processedImage = [processedImage imageWithCornerRadius:_cornerRadius];
+            }
+            
+            //apply shadow
+            if (shadowColor && ![shadowColor isEqual:[UIColor clearColor]] &&
+                (shadowBlur || !CGSizeEqualToSize(shadowOffset, CGSizeZero)))
+            {
+                reflectionGap -= 2.0f * (fabsf(shadowOffset.height) + shadowBlur);
+                processedImage = [processedImage imageWithShadowColor:shadowColor
+                                                               offset:shadowOffset
+                                                                 blur:shadowBlur];
+            }
+            
+            //apply reflection
+            if (self.reflectionScale && self.reflectionAlpha)
+            {
+                processedImage = [processedImage imageWithReflectionWithScale:reflectionScale
+                                                                          gap:reflectionGap
+                                                                        alpha:reflectionAlpha];
+            }
         }
     }
     
     //cache and set image
-    if (processedImage)
+    if ([[NSThread currentThread] isMainThread])
     {
-        if ([[NSThread currentThread] isMainThread])
+        if (processedImage)
         {
             [[[self class] processedImageCache] setObject:processedImage forKey:cacheKey];
-            self.imageView.image = processedImage;
         }
-        else
-        {
-            [self performSelectorOnMainThread:@selector(setProcessedImageOnMainThread:)
-                                   withObject:[NSArray arrayWithObjects:processedImage, cacheKey, nil]
-                                waitUntilDone:YES];
-        }
+        _imageView.image = processedImage;
+    }
+    else
+    {
+        [self performSelectorOnMainThread:@selector(setProcessedImageOnMainThread:)
+                               withObject:[NSArray arrayWithObjects:processedImage ?: [NSNull null], cacheKey, nil]
+                            waitUntilDone:YES];
     }
 }
 
@@ -445,27 +419,32 @@
     
 }
 
+- (void)updateProcessedImage
+{
+    UIImage *processedImage = [self cachedProcessedImage];
+    if (processedImage)
+    {
+        //use cached version
+        _imageView.image = ([processedImage isKindOfClass:[NSNull class]])? nil: processedImage;
+    }
+    else if (_asynchronous)
+    {
+        //process in background
+        [self queueImageForProcessing];
+    }
+    else
+    {
+        //process on main thread
+        [self processImage];
+    }
+}
+
 - (void)layoutSubviews
 {
     _imageView.frame = self.bounds;
     if (_imageContentURL || self.image)
     {
-        UIImage *processedImage = [self cachedProcessedImage];
-        if (processedImage)
-        {
-            //use cached version
-            _imageView.image = processedImage;
-        }
-        else if (_asynchronous)
-        {
-            //process in background
-            [self queueImageForProcessing];
-        }
-        else
-        {
-            //process on main thread
-            [self processImage];
-        }
+        [self updateProcessedImage];
     }
 }
 
@@ -481,7 +460,7 @@
 - (void)setProcessedImage:(UIImage *)image
 {
     self.originalImage = nil;
-    _imageView.image = image;
+    _imageView.image = ([image isKindOfClass:[NSNull class]])? nil: image;
 }
 
 - (UIImage *)image
@@ -494,30 +473,10 @@
     if (![_originalImage isEqual:image])
     {
         self.originalImage = image;
-        if (image)
-        {
-            UIImage *processedImage = [self cachedProcessedImage];
-            if (processedImage)
-            {
-                //use cached version
-                _imageView.image = processedImage;
-            }
-            else if (_asynchronous)
-            {
-                //process in background
-                [self queueImageForProcessing];
-            }
-            else
-            {
-                //process on main thread
-                [self processImage];
-            }
-        }
-        else
-        {
-            //clear image
-            _imageView.image = nil;
-        }
+        self.imageContentURL = nil;
+        
+        //update processed image
+        [self updateProcessedImage];
     }
 }
 
@@ -646,49 +605,8 @@
         self.imageContentURL = URL;
         self.originalImage = nil;
         
-        if (_asynchronous)
-        {
-            [self setNeedsLayout];
-        }
-        else
-        {
-            //load image directly
-            NSData *data = [NSData dataWithContentsOfURL:URL];
-            self.image = [UIImage imageWithData:data];
-        }
-    }
-}
-
-- (void)setImageWithBlock:(UIImage *(^)(void))block
-{
-    //clear current image
-    self.originalImage = nil;
-    self.imageContentURL = nil;
-    
-    if (_asynchronous)
-    {
-        //create block operation
-        FXImageBlockOperation *operation = [[FXImageBlockOperation alloc] init];
-        operation.target = self;
-        operation.block = block;
-        
-        //set operation thread priority
-        [operation setThreadPriority:1.0];
-        
-        //queue operation
-        [self queueProcessingOperation:operation];
-        
-#if !__has_feature(objc_arc)
-        
-        [operation release];
-        
-#endif
-        
-    }
-    else
-    {
-        //set image directly
-        self.image = block();
+        //update processed image
+        [self updateProcessedImage];
     }
 }
 

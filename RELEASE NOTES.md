@@ -1,3 +1,9 @@
+Version 1.2.1
+
+- Removed setWithBlock: method due to unresolvable caching issue
+- Added some additional UIImage+FX methods
+- Fixed some caching bugs
+
 Version 1.2
 
 - Added corner radius clipping effect
