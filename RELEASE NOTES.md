@@ -1,3 +1,9 @@
+Version 1.2.2
+
+- Fixed some additional caching bugs
+- FXImageView is now KVO-compliant for the image and processedImage properties
+- Added KVO example
+
 Version 1.2.1
 
 - Removed setWithBlock: method due to unresolvable caching issue
