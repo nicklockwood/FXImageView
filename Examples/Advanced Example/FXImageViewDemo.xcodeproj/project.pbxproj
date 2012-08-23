@@ -18,8 +18,9 @@
 		B2F2748415A4555700513759 /* FXImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F2748115A4555700513759 /* FXImageView.m */; };
 		B2F2748515A4555700513759 /* UIImage+FX.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F2748315A4555700513759 /* UIImage+FX.m */; };
 		B2F2749515A4556000513759 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F2748815A4556000513759 /* iCarousel.m */; };
-		B2F274A915A457C500513759 /* Lake in Resources */ = {isa = PBXBuildFile; fileRef = B2F274A815A457C500513759 /* Lake */; };
 		B2F274AB15A4588000513759 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2F274AA15A4588000513759 /* QuartzCore.framework */; };
+		F908802315E6BD6F008C9D69 /* Loading.png in Resources */ = {isa = PBXBuildFile; fileRef = F908802215E6BD6F008C9D69 /* Loading.png */; };
+		F908802515E6BD91008C9D69 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F908802415E6BD91008C9D69 /* AssetsLibrary.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,8 +43,9 @@
 		B2F2748315A4555700513759 /* UIImage+FX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+FX.m"; sourceTree = "<group>"; };
 		B2F2748715A4556000513759 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		B2F2748815A4556000513759 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
-		B2F274A815A457C500513759 /* Lake */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Lake; path = ../Lake; sourceTree = "<group>"; };
 		B2F274AA15A4588000513759 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		F908802215E6BD6F008C9D69 /* Loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Loading.png; sourceTree = "<group>"; };
+		F908802415E6BD91008C9D69 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F908802515E6BD91008C9D69 /* AssetsLibrary.framework in Frameworks */,
 				B2F274AB15A4588000513759 /* QuartzCore.framework in Frameworks */,
 				01FA10C2145E9951001906CB /* UIKit.framework in Frameworks */,
 				01FA10C4145E9951001906CB /* Foundation.framework in Frameworks */,
@@ -64,6 +67,7 @@
 		01FA10B2145E994F001906CB = {
 			isa = PBXGroup;
 			children = (
+				F908802415E6BD91008C9D69 /* AssetsLibrary.framework */,
 				B2F2748615A4556000513759 /* iCarousel */,
 				B2F2747F15A4555700513759 /* FXImageView */,
 				01FA10C7145E9951001906CB /* FXImageViewDemo */,
@@ -99,7 +103,6 @@
 				01FA10D3145E9951001906CB /* ViewController.h */,
 				01FA10D4145E9951001906CB /* ViewController.m */,
 				01FA10D6145E9951001906CB /* ViewController.xib */,
-				B2F274A815A457C500513759 /* Lake */,
 				01FA10C8145E9951001906CB /* Supporting Files */,
 			);
 			path = FXImageViewDemo;
@@ -108,6 +111,7 @@
 		01FA10C8145E9951001906CB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F908802215E6BD6F008C9D69 /* Loading.png */,
 				01FA10C9145E9951001906CB /* FXImageViewDemo-Info.plist */,
 				01FA10CA145E9951001906CB /* InfoPlist.strings */,
 				01FA10CD145E9951001906CB /* main.m */,
@@ -189,7 +193,7 @@
 			files = (
 				01FA10CC145E9951001906CB /* InfoPlist.strings in Resources */,
 				01FA10D8145E9951001906CB /* ViewController.xib in Resources */,
-				B2F274A915A457C500513759 /* Lake in Resources */,
+				F908802315E6BD6F008C9D69 /* Loading.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
