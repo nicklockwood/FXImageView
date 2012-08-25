@@ -1,3 +1,9 @@
+Version 1.2.3
+
+- Fixed potential crash when using custom effects block
+- Replaced customEffectsIdentifier property with more generally useful cacheKey
+- Fixed a compiler warning in UIImage+FX category
+
 Version 1.2.2
 
 - Fixed some additional caching bugs

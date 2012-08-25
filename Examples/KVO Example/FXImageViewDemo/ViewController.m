@@ -50,7 +50,7 @@
 - (IBAction)update
 {
     //reset display
-    //_imageView.image = nil;
+    _imageView.image = nil;
     _successLabel.text = nil;
     [_activityView startAnimating];
     _button.enabled = NO;

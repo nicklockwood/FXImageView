@@ -9,9 +9,9 @@ As a bonus, FXImageView includes a standalone UIImage category for cropping, sca
 Supported iOS & SDK Versions
 -----------------------------
 
-* Supported build target - iOS 5.1 / Mac OS 10.7 (Xcode 4.3, Apple LLVM compiler 3.1)
-* Earliest supported deployment target - iOS 4.3 / Mac OS 10.6
-* Earliest compatible deployment target - iOS 4.0 / Mac OS 10.6
+* Supported build target - iOS 5.1 (Xcode 4.4, Apple LLVM compiler 4.0)
+* Earliest supported deployment target - iOS 4.3
+* Earliest compatible deployment target - iOS 4.0
 
 NOTE: 'Supported' means that the library has been tested with this version. 'Compatible' means that the library should work on this iOS version (i.e. it doesn't rely on any unavailable SDK features) but is no longer being tested for compatibility and may require tweaking or bug fixes to run correctly.
 
@@ -157,6 +157,6 @@ The resultant image after applying reflection and shadow effects. It can sometim
     
 If you want to apply a custom effect to your image, you can do your custom drawing using the `customEffectsBlock` property. The block is passed the correctly cropped and scaled image, and you code should return a new version with your custom effects applied. Your custom drawing block is applied prior to any other effects (apart from cropping and scaling).   FXImageView's caching mechanism doesn't know about your custom effects, so if your app uses multiple effects blocks, or your block relies on any external data, you should update the `customEffectsIdentifier` property so that the FXImageView cache can handle it correctly. Note that you should ensure that your block code is thread-safe if used in asynchronous mode.
      
-    @property (nonatomic, copy) NSDictionary *customEffectsIdentifier;
+    @property (nonatomic, copy) NSString *cacheKey;
     
-If you are using the `customEffectsBlock` property, FXImageView's caching mechanism doesn't know about your custom effects and doesn't know if they need to change, so if your block relies on any external data you should update the `customEffectsIdentifier` property so that the FXImageView cache can handle it correctly. The customEffectsIdentifier is just a string used to generate a cache key, so it doesn't matter what you put in it as long as it uniquely distinguishes the effects you are applying to this image from any other.
+FXImageView caches processed images based on the image object or URL that you specify, combined with the specific set of effects you've selected. This mechanism works effectively in most cases, but for image objects that are generated on the fly, or ones that are loaded from the ALAssets library, you don't get any benefit from the caching because the same image objects are never used twice. In these cases you can improve performance by using a custom cache key. The key can be any string, the only requirement is that is should be unique for each unique image & effects combination that you use with FXImageView. If you are displaying your images in a carousel, a string based on the carousel item index would be a good choice for the cache key. Set the cacheKey property to nil to revert to the default cache key calculation.
