@@ -81,6 +81,7 @@
 @implementation FXImageView
 
 @synthesize asynchronous = _asynchronous;
+@synthesize animated = _animated;
 @synthesize reflectionGap = _reflectionGap;
 @synthesize reflectionScale = _reflectionScale;
 @synthesize reflectionAlpha = _reflectionAlpha;
@@ -126,6 +127,7 @@
 
 - (void)setUp
 {
+	_animated = YES;
     self.shadowColor = [UIColor blackColor];
     _imageView = [[UIImageView alloc] initWithFrame:self.bounds];
     _imageView.contentMode = UIViewContentModeCenter;
@@ -265,9 +267,12 @@
     if ([[self cacheKey] isEqualToString:cacheKey])
     {
         //implement crossfade transition without needing to import QuartzCore
-        id animation = objc_msgSend(NSClassFromString(@"CATransition"), @selector(animation));
-        objc_msgSend(animation, @selector(setType:), @"kCATransitionFade");
-        objc_msgSend(self.layer, @selector(addAnimation:forKey:), animation, nil);
+		if (_animated)
+		{
+			id animation = objc_msgSend(NSClassFromString(@"CATransition"), @selector(animation));
+			objc_msgSend(animation, @selector(setType:), @"kCATransitionFade");
+			objc_msgSend(self.layer, @selector(addAnimation:forKey:), animation, nil);
+		}
         
         //set processed image
         [self willChangeValueForKey:@"processedImage"];

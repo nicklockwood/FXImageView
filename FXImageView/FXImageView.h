@@ -39,6 +39,7 @@
 + (NSCache *)processedImageCache;
 
 @property (nonatomic, assign, getter = isAsynchronous) BOOL asynchronous;
+@property (nonatomic, assign, getter = isAnimated) BOOL animated;
 @property (nonatomic, assign) CGFloat reflectionGap;
 @property (nonatomic, assign) CGFloat reflectionScale;
 @property (nonatomic, assign) CGFloat reflectionAlpha;
