@@ -1,3 +1,10 @@
+Version 1.3
+
+- Added crossfadeDuration property to control or disable crossfade effect
+- Now requires ARC
+- Now complies with -Wall and -Wextra warning levels
+- Cache is now cleared in the event of a low-memory warning
+
 Version 1.2.3
 
 - Fixed potential crash when using custom effects block

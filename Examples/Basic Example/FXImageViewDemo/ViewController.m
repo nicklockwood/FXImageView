@@ -30,10 +30,5 @@
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 
-- (void)dealloc
-{
-    [_imageView release];
-    [super dealloc];
-}
 
 @end

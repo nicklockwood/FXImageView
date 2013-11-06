@@ -1,7 +1,7 @@
 //
 //  FXImageView.h
 //
-//  Version 1.2.3
+//  Version 1.3
 //
 //  Created by Nick Lockwood on 31/10/2011.
 //  Copyright (c) 2011 Charcoal Design
@@ -39,6 +39,7 @@
 + (NSCache *)processedImageCache;
 
 @property (nonatomic, assign, getter = isAsynchronous) BOOL asynchronous;
+@property (nonatomic, assign) NSTimeInterval crossfadeDuration;
 @property (nonatomic, assign) CGFloat reflectionGap;
 @property (nonatomic, assign) CGFloat reflectionScale;
 @property (nonatomic, assign) CGFloat reflectionAlpha;

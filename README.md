@@ -9,9 +9,9 @@ As a bonus, FXImageView includes a standalone UIImage category for cropping, sca
 Supported iOS & SDK Versions
 -----------------------------
 
-* Supported build target - iOS 5.1 (Xcode 4.4, Apple LLVM compiler 4.0)
-* Earliest supported deployment target - iOS 4.3
-* Earliest compatible deployment target - iOS 4.0
+* Supported build target - iOS 7.0 (Xcode 5.0, Apple LLVM compiler 5.0)
+* Earliest supported deployment target - iOS 5.0
+* Earliest compatible deployment target - iOS 4.3
 
 NOTE: 'Supported' means that the library has been tested with this version. 'Compatible' means that the library should work on this iOS version (i.e. it doesn't rely on any unavailable SDK features) but is no longer being tested for compatibility and may require tweaking or bug fixes to run correctly.
 
@@ -19,7 +19,17 @@ NOTE: 'Supported' means that the library has been tested with this version. 'Com
 ARC Compatibility
 ------------------
 
-FXImageView is designed to automatically work with both ARC and non-ARC projects through conditional compilation. There is no need to exclude FXImageView files from the ARC validation process, or to convert FXImageView using the ARC conversion tool.
+As of version 1.3, FXImageView requires ARC. If you wish to use FXImageView in a non-ARC project, just add the -fobjc-arc compiler flag to the FXImageView.m class. To do this, go to the Build Phases tab in your target settings, open the Compile Sources group, double-click FXImageView.m in the list and type -fobjc-arc into the popover.
+
+If you wish to convert your whole project to ARC, comment out the #error line in FXImageView.m, then run the Edit > Refactor > Convert to Objective-C ARC... tool in Xcode and make sure all files that you wish to use ARC for (including FXImageView.m) are checked.
+
+
+Thread Safety
+--------------
+
+FXImageView is derived from UIView and - as with all UIKit components - it should only be accessed from the main thread. FXImageView uses threads internally to avoid blocking user interaction, but FXImageView's properties should only ever be accessed from the main thread.
+
+The UIImage(FX) category methods are all thread-safe and may safely be called concurrently from multiple threads on the same UIImage instance.
 
 
 Installation
@@ -116,6 +126,10 @@ FXImageView properties
     @property (nonatomic, assign, getter = isAsynchronous) BOOL asynchronous;
     
 The shadow and reflection effects take time to render. In many cases this will be imperceptible, but for high-performance applications such as a scrolling carousel, this rendering delay may cause stuttering in the animation. This method toggles whether the shadow and reflection effects are applied immediately on the main thread (asynchronous = NO), or rendered in a background thread (asynchronous = YES). By rendering the effects in the background, the performance issues can be avoided. Defaults to NO.
+
+    @property (nonatomic, assign) NSTimeInterval crossfadeDuration;
+
+This porperty controls the duration of the crossfade animation when the image finishes processing and is displayed, measured in seconds. The default duration is 0.25. Set the duration to zero to disable the crossfade altogether.
     
     @property (nonatomic, assign) CGFloat reflectionGap;
     

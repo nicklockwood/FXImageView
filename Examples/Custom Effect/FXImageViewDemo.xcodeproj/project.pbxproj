@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0107C29B1829A4E800D0EFDB /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0107C29A1829A4E800D0EFDB /* Default-568h@2x.png */; };
+		0107C29E1829A5DE00D0EFDB /* UIImage+FX.m in Sources */ = {isa = PBXBuildFile; fileRef = 0107C29D1829A5DE00D0EFDB /* UIImage+FX.m */; };
 		01642CB715B20D280072C631 /* mask.png in Resources */ = {isa = PBXBuildFile; fileRef = 01642CB615B20D280072C631 /* mask.png */; };
 		01E993FE159BCA9C0059DD43 /* IMG_0150.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 01E993FD159BCA9C0059DD43 /* IMG_0150.jpg */; };
 		01E99409159BD4B30059DD43 /* FXImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E99406159BD4B30059DD43 /* FXImageView.m */; };
-		01E9940A159BD4B30059DD43 /* UIImage+FX.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E99408159BD4B30059DD43 /* UIImage+FX.m */; };
 		01FA10C2145E9951001906CB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01FA10C1145E9951001906CB /* UIKit.framework */; };
 		01FA10C4145E9951001906CB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01FA10C3145E9951001906CB /* Foundation.framework */; };
 		01FA10C6145E9951001906CB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01FA10C5145E9951001906CB /* CoreGraphics.framework */; };
@@ -22,12 +23,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0107C29A1829A4E800D0EFDB /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		0107C29C1829A5DE00D0EFDB /* UIImage+FX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+FX.h"; sourceTree = "<group>"; };
+		0107C29D1829A5DE00D0EFDB /* UIImage+FX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+FX.m"; sourceTree = "<group>"; };
 		01642CB615B20D280072C631 /* mask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mask.png; sourceTree = "<group>"; };
 		01E993FD159BCA9C0059DD43 /* IMG_0150.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IMG_0150.jpg; sourceTree = "<group>"; };
 		01E99405159BD4B30059DD43 /* FXImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXImageView.h; sourceTree = "<group>"; };
 		01E99406159BD4B30059DD43 /* FXImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXImageView.m; sourceTree = "<group>"; };
-		01E99407159BD4B30059DD43 /* UIImage+FX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+FX.h"; sourceTree = "<group>"; };
-		01E99408159BD4B30059DD43 /* UIImage+FX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+FX.m"; sourceTree = "<group>"; };
 		01FA10BD145E9951001906CB /* FXImageViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FXImageViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01FA10C1145E9951001906CB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		01FA10C3145E9951001906CB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -60,8 +62,8 @@
 		01E99404159BD4B30059DD43 /* FXImageView */ = {
 			isa = PBXGroup;
 			children = (
-				01E99407159BD4B30059DD43 /* UIImage+FX.h */,
-				01E99408159BD4B30059DD43 /* UIImage+FX.m */,
+				0107C29C1829A5DE00D0EFDB /* UIImage+FX.h */,
+				0107C29D1829A5DE00D0EFDB /* UIImage+FX.m */,
 				01E99405159BD4B30059DD43 /* FXImageView.h */,
 				01E99406159BD4B30059DD43 /* FXImageView.m */,
 			);
@@ -113,6 +115,7 @@
 		01FA10C8145E9951001906CB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0107C29A1829A4E800D0EFDB /* Default-568h@2x.png */,
 				01E993FD159BCA9C0059DD43 /* IMG_0150.jpg */,
 				01642CB615B20D280072C631 /* mask.png */,
 				01FA10C9145E9951001906CB /* FXImageViewDemo-Info.plist */,
@@ -176,6 +179,7 @@
 				01FA10CC145E9951001906CB /* InfoPlist.strings in Resources */,
 				01FA10D8145E9951001906CB /* ViewController.xib in Resources */,
 				01E993FE159BCA9C0059DD43 /* IMG_0150.jpg in Resources */,
+				0107C29B1829A4E800D0EFDB /* Default-568h@2x.png in Resources */,
 				01642CB715B20D280072C631 /* mask.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -187,11 +191,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0107C29E1829A5DE00D0EFDB /* UIImage+FX.m in Sources */,
 				01FA10CE145E9951001906CB /* main.m in Sources */,
 				01FA10D2145E9951001906CB /* AppDelegate.m in Sources */,
 				01FA10D5145E9951001906CB /* ViewController.m in Sources */,
 				01E99409159BD4B30059DD43 /* FXImageView.m in Sources */,
-				01E9940A159BD4B30059DD43 /* UIImage+FX.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,6 +226,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_STATIC_ANALYZER_MODE = deep;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -237,7 +242,12 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
 			};
 			name = Debug;
 		};
@@ -246,6 +256,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_STATIC_ANALYZER_MODE = deep;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -255,14 +266,20 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
 			};
 			name = Release;
 		};
 		01FA10DC145E9951001906CB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FXImageViewDemo/FXImageViewDemo-Prefix.pch";
 				INFOPLIST_FILE = "FXImageViewDemo/FXImageViewDemo-Info.plist";
@@ -274,6 +291,7 @@
 		01FA10DD145E9951001906CB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FXImageViewDemo/FXImageViewDemo-Prefix.pch";
 				INFOPLIST_FILE = "FXImageViewDemo/FXImageViewDemo-Info.plist";

@@ -1,7 +1,7 @@
 //
 //  UIImage+FX.m
 //
-//  Version 1.2.3
+//  Version 1.3
 //
 //  Created by Nick Lockwood on 31/10/2011.
 //  Copyright (c) 2011 Charcoal Design
@@ -106,7 +106,7 @@
 
 - (UIImage *)imageCroppedAndScaledToSize:(CGSize)size
                              contentMode:(UIViewContentMode)contentMode
-                                padToFit:(BOOL)padToFit;
+                                padToFit:(BOOL)padToFit
 {
     //calculate rect
     CGRect rect = CGRectZero;
@@ -368,7 +368,7 @@
 	return image;
 }
 
-- (UIImage *)imageWithMask:(UIImage *)maskImage;
+- (UIImage *)imageWithMask:(UIImage *)maskImage
 {
     //create drawing context
     UIGraphicsBeginImageContextWithOptions(self.size, NO, 0.0f);
@@ -396,17 +396,17 @@
     
     //create alpha image
     NSInteger bytesPerRow = ((width + 3) / 4) * 4;
-    void *data = calloc(bytesPerRow * height, sizeof(unsigned char *));
-    CGContextRef context = CGBitmapContextCreate(data, width, height, 8, bytesPerRow, NULL, kCGImageAlphaOnly);
+    uint8_t *data = (uint8_t *)malloc(bytesPerRow * height);
+    CGContextRef context = CGBitmapContextCreate(data, width, height, 8, bytesPerRow, NULL, (CGBitmapInfo)kCGImageAlphaOnly);
     CGContextDrawImage(context, CGRectMake(0.0f, 0.0f, width, height), self.CGImage);
     
     //invert alpha pixels
-    for (int y = 0; y < height; y++)
+    for (NSInteger y = 0; y < height; y++)
     {
-        for (int x = 0; x < width; x++)
+        for (NSInteger x = 0; x < width; x++)
         {
             NSInteger index = y * bytesPerRow + x;
-            ((unsigned char *)data)[index] = 255 - ((unsigned char *)data)[index];
+            data[index] = 255 - data[index];
         }
     }
     

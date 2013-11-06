@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0107C2A61829A7BE00D0EFDB /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0107C2A51829A7BE00D0EFDB /* Default-568h@2x.png */; };
 		01FA10C2145E9951001906CB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01FA10C1145E9951001906CB /* UIKit.framework */; };
 		01FA10C4145E9951001906CB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01FA10C3145E9951001906CB /* Foundation.framework */; };
 		01FA10C6145E9951001906CB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01FA10C5145E9951001906CB /* CoreGraphics.framework */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0107C2A51829A7BE00D0EFDB /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		01FA10BD145E9951001906CB /* FXImageViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FXImageViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01FA10C1145E9951001906CB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		01FA10C3145E9951001906CB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -108,6 +110,7 @@
 		01FA10C8145E9951001906CB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0107C2A51829A7BE00D0EFDB /* Default-568h@2x.png */,
 				01FA10C9145E9951001906CB /* FXImageViewDemo-Info.plist */,
 				01FA10CA145E9951001906CB /* InfoPlist.strings */,
 				01FA10CD145E9951001906CB /* main.m */,
@@ -188,6 +191,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				01FA10CC145E9951001906CB /* InfoPlist.strings in Resources */,
+				0107C2A61829A7BE00D0EFDB /* Default-568h@2x.png in Resources */,
 				01FA10D8145E9951001906CB /* ViewController.xib in Resources */,
 				B2F274A915A457C500513759 /* Lake in Resources */,
 			);
@@ -277,10 +281,18 @@
 		01FA10DC145E9951001906CB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_STATIC_ANALYZER_MODE = deep;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FXImageViewDemo/FXImageViewDemo-Prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = "FXImageViewDemo/FXImageViewDemo-Info.plist";
 				PRODUCT_NAME = FXImageViewDemo;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				WARNING_CFLAGS = (
+					"-Wextra",
+					"-Wall",
+				);
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -288,10 +300,18 @@
 		01FA10DD145E9951001906CB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_STATIC_ANALYZER_MODE = deep;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FXImageViewDemo/FXImageViewDemo-Prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = "FXImageViewDemo/FXImageViewDemo-Info.plist";
 				PRODUCT_NAME = FXImageViewDemo;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				WARNING_CFLAGS = (
+					"-Wextra",
+					"-Wall",
+				);
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

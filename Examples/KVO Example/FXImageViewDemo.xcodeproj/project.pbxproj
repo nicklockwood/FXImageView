@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01DB12EF1829B9520072A32D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01DB12EE1829B9520072A32D /* Default-568h@2x.png */; };
 		01E99409159BD4B30059DD43 /* FXImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E99406159BD4B30059DD43 /* FXImageView.m */; };
 		01E9940A159BD4B30059DD43 /* UIImage+FX.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E99408159BD4B30059DD43 /* UIImage+FX.m */; };
 		01FA10C2145E9951001906CB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01FA10C1145E9951001906CB /* UIKit.framework */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		01DB12EE1829B9520072A32D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		01E99405159BD4B30059DD43 /* FXImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXImageView.h; sourceTree = "<group>"; };
 		01E99406159BD4B30059DD43 /* FXImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXImageView.m; sourceTree = "<group>"; };
 		01E99407159BD4B30059DD43 /* UIImage+FX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+FX.h"; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 		01FA10C8145E9951001906CB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				01DB12EE1829B9520072A32D /* Default-568h@2x.png */,
 				01FA10C9145E9951001906CB /* FXImageViewDemo-Info.plist */,
 				01FA10CA145E9951001906CB /* InfoPlist.strings */,
 				01FA10CD145E9951001906CB /* main.m */,
@@ -168,6 +171,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				01FA10CC145E9951001906CB /* InfoPlist.strings in Resources */,
+				01DB12EF1829B9520072A32D /* Default-568h@2x.png in Resources */,
 				01FA10D8145E9951001906CB /* ViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
