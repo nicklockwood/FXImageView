@@ -1,7 +1,7 @@
 //
 //  FXImageView.h
 //
-//  Version 1.3
+//  Version 1.3.1
 //
 //  Created by Nick Lockwood on 31/10/2011.
 //  Copyright (c) 2011 Charcoal Design
@@ -31,6 +31,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 
 
 @interface FXImageView : UIImageView

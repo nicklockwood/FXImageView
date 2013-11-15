@@ -1,3 +1,7 @@
+Version 1.3.1
+
+- Added QuartzCore import to fix podspecs issue
+
 Version 1.3
 
 - Added crossfadeDuration property to control or disable crossfade effect
