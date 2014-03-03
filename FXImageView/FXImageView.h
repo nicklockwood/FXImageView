@@ -1,7 +1,7 @@
 //
 //  FXImageView.h
 //
-//  Version 1.3.1
+//  Version 1.3.2
 //
 //  Created by Nick Lockwood on 31/10/2011.
 //  Copyright (c) 2011 Charcoal Design
@@ -30,6 +30,9 @@
 //  3. This notice may not be removed or altered from any source distribution.
 //
 
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wobjc-missing-property-synthesis"
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
@@ -57,3 +60,6 @@
 - (void)setImageWithContentsOfURL:(NSURL *)URL;
 
 @end
+
+
+#pragma GCC diagnostic pop

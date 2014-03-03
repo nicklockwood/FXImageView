@@ -1,7 +1,7 @@
 //
 //  iCarousel.m
 //
-//  Version 1.8 beta 9
+//  Version 1.8 beta 14
 //
 //  Created by Nick Lockwood on 01/04/2011.
 //  Copyright 2011 Charcoal Design
@@ -40,10 +40,10 @@
 #endif
 
 
-#define MIN_TOGGLE_DURATION 0.2f
-#define MAX_TOGGLE_DURATION 0.4f
-#define SCROLL_DURATION 0.4f
-#define INSERT_DURATION 0.4f
+#define MIN_TOGGLE_DURATION 0.2
+#define MAX_TOGGLE_DURATION 0.4
+#define SCROLL_DURATION 0.4
+#define INSERT_DURATION 0.4
 #define DECELERATE_THRESHOLD 0.1f
 #define SCROLL_SPEED_THRESHOLD 2.0f
 #define SCROLL_DISTANCE_THRESHOLD 0.1f
@@ -100,6 +100,7 @@
 @property (nonatomic, assign) NSTimeInterval scrollDuration;
 @property (nonatomic, assign, getter = isScrolling) BOOL scrolling;
 @property (nonatomic, assign) NSTimeInterval startTime;
+@property (nonatomic, assign) NSTimeInterval lastTime;
 @property (nonatomic, assign) CGFloat startVelocity;
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, assign, getter = isDecelerating) BOOL decelerating;
@@ -139,10 +140,17 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     
 #ifdef ICAROUSEL_IOS
     
+    _contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
+    //add pan gesture recogniser
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(didPan:)];
     panGesture.delegate = (id <UIGestureRecognizerDelegate>)self;
-    _contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [_contentView addGestureRecognizer:panGesture];
+    
+    //add tap gesture recogniser
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap:)];
+    tapGesture.delegate = (id <UIGestureRecognizerDelegate>)self;
+    [_contentView addGestureRecognizer:tapGesture];
     
 #else
     
@@ -253,6 +261,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     if (_scrollOffset != scrollOffset)
     {
         _scrollOffset = scrollOffset;
+        [self depthSortViews];
         [self didScroll];
     }
 }
@@ -286,6 +295,15 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     {
         _contentOffset = contentOffset;
         [self layOutItemViews];
+    }
+}
+
+- (void)setAutoscroll:(CGFloat)autoscroll
+{
+    if (_autoscroll != autoscroll)
+    {
+        _autoscroll = autoscroll;
+        if (autoscroll != 0.0f) [self startAnimation];
     }
 }
 
@@ -343,6 +361,18 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
         return [self indexOfItemViewOrSubview:view.superview];
     }
     return index;
+}
+
+- (UIView *)itemViewAtPoint:(CGPoint)point
+{
+    for (UIView *view in [[[_itemViews allValues] sortedArrayUsingFunction:(NSInteger (*)(id, id, void *))compareViewDepth context:(__bridge void *)self] reverseObjectEnumerator])
+    {
+        if ([view.superview.layer hitTest:point])
+        {
+            return view;
+        }
+    }
+    return nil;
 }
 
 - (void)setItemView:(UIView *)view forIndex:(NSInteger)index
@@ -703,11 +733,11 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     CGFloat offset = index - _scrollOffset;
     if (_wrapEnabled)
     {
-        if (offset > _numberOfItems/2)
+        if (offset > _numberOfItems/2.0f)
         {
             offset -= _numberOfItems;
         }
-        else if (offset < -_numberOfItems/2)
+        else if (offset < -_numberOfItems/2.0f)
         {
             offset += _numberOfItems;
         }
@@ -746,15 +776,8 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     frame.size.height = _vertical? _itemWidth: frame.size.height;
     UIView *containerView = [[UIView alloc] initWithFrame:frame];
     
-#ifdef ICAROUSEL_IOS
-    
-    //add tap gesture recogniser
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap:)];
-    tapGesture.delegate = (id <UIGestureRecognizerDelegate>)self;
-    [containerView addGestureRecognizer:tapGesture];
-    
-#else
-    
+#ifdef ICAROUSEL_MACOS
+
     //clipping works differently on Mac OS
     [containerView setBoundsSize:view.frame.size];
 
@@ -783,6 +806,9 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     
     //update alpha
     view.superview.alpha = [self alphaForItemWithOffset:offset];
+    
+    //enable/disable interaction
+    view.superview.userInteractionEnabled = (!_centerItemWhenSelected || index == self.currentItemIndex);
     
 #else
     
@@ -841,13 +867,6 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     view.superview.hidden = !(showBackfaces ?: (transform.m33 > 0.0f));
 }
 
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    _contentView.frame = self.bounds;
-    [self layOutItemViews];
-}
-
 #ifdef ICAROUSEL_MACOS
 
 - (void)resizeSubviewsWithOldSize:(NSSize)oldSize
@@ -856,6 +875,15 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     _contentView.frame = self.bounds;
     [self layOutItemViews];
     [self popAnimationState];
+}
+
+#else
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    _contentView.frame = self.bounds;
+    [self layOutItemViews];
 }
 
 #endif
@@ -867,12 +895,6 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
         NSInteger index = [number integerValue];
         UIView *view = _itemViews[number];
         [self transformItemView:view atIndex:index];
-        
-#ifdef ICAROUSEL_IOS
-        
-        view.userInteractionEnabled = (!_centerItemWhenSelected || index == self.currentItemIndex);
-#endif
-        
     }
 }
 
@@ -1204,7 +1226,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     
     //calculate visible view indices
     NSMutableSet *visibleIndices = [NSMutableSet setWithCapacity:_numberOfVisibleItems];
-    NSInteger min = -(int)ceilf((CGFloat)_numberOfPlaceholdersToShow/2.0f);
+    NSInteger min = -(NSInteger)ceilf((CGFloat)_numberOfPlaceholdersToShow/2.0f);
     NSInteger max = _numberOfItems - 1 + _numberOfPlaceholdersToShow/2;
     NSInteger offset = self.currentItemIndex - _numberOfVisibleItems/2;
     if (!_wrapEnabled)
@@ -1697,6 +1719,8 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
 {
     [self pushAnimationState:NO];
     NSTimeInterval currentTime = CACurrentMediaTime();
+    double delta = _lastTime - currentTime;
+    _lastTime = currentTime;
     
     if (_toggle != 0.0f)
     {
@@ -1765,6 +1789,10 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
                 _toggle = fmaxf(-1.0f, fminf(1.0f, -difference));
             }
         }
+    }
+    else if (_autoscroll)
+    {
+        if (!_dragging) self.scrollOffset = [self clampedOffset:_scrollOffset + delta * _autoscroll];
     }
     else if (_toggle == 0.0f)
     {
@@ -1878,33 +1906,33 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
 
 - (BOOL)viewOrSuperview:(UIView *)view implementsSelector:(SEL)selector
 {
+    if (!view || view == self.contentView)
+    {
+        return NO;
+    }
+    
     //thanks to @mattjgalloway and @shaps for idea
     //https://gist.github.com/mattjgalloway/6279363
     //https://gist.github.com/shaps80/6279008
     
     Class viewClass = [view class];
-	while (viewClass && viewClass != [UIView class])
+    while (viewClass && viewClass != [UIView class])
     {
-		unsigned int numberOfMethods;
-		Method *methods = class_copyMethodList(viewClass, &numberOfMethods);
-		for (unsigned int i = 0; i < numberOfMethods; i++)
+        unsigned int numberOfMethods;
+        Method *methods = class_copyMethodList(viewClass, &numberOfMethods);
+        for (unsigned int i = 0; i < numberOfMethods; i++)
         {
-			if (method_getName(methods[i]) == selector)
+            if (method_getName(methods[i]) == selector)
             {
                 free(methods);
-				return YES;
-			}
-		}
+                return YES;
+            }
+        }
         if (methods) free(methods);
-		viewClass = [viewClass superclass];
-	}
-    
-    if (view.superview && view.superview != self.contentView)
-    {
-        return [self viewOrSuperview:view.superview implementsSelector:selector];
+        viewClass = [viewClass superclass];
     }
     
-	return NO;
+    return [self viewOrSuperview:view.superview implementsSelector:selector];
 }
 
 - (id)viewOrSuperview:(UIView *)view ofClass:(Class)class
@@ -1922,6 +1950,13 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gesture shouldReceiveTouch:(UITouch *)touch
 {
+    if (_scrollEnabled)
+    {
+        _dragging = NO;
+        _scrolling = NO;
+        _decelerating = NO;
+    }
+    
     if ([gesture isKindOfClass:[UITapGestureRecognizer class]])
     {
         //handle tap
@@ -1984,14 +2019,23 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
 
 - (void)didTap:(UITapGestureRecognizer *)tapGesture
 {
-    NSInteger index = [self indexOfItemView:[tapGesture.view.subviews lastObject]];
-    if (!_delegate || [_delegate carousel:self shouldSelectItemAtIndex:index])
+    //check for tapped view
+    NSInteger index = [self indexOfItemView:[self itemViewAtPoint:[tapGesture locationInView:_contentView]]];
+    if (index != NSNotFound)
     {
-        if (_centerItemWhenSelected && index != self.currentItemIndex)
+        if (!_delegate || [_delegate carousel:self shouldSelectItemAtIndex:index])
         {
-            [self scrollToItemAtIndex:index animated:YES];
+            if ((index != self.currentItemIndex && _centerItemWhenSelected) ||
+                (index == self.currentItemIndex && _scrollToItemBoundary))
+            {
+                [self scrollToItemAtIndex:index animated:YES];
+            }
+            [_delegate carousel:self didSelectItemAtIndex:index];
         }
-        [_delegate carousel:self didSelectItemAtIndex:index];
+        else if (_scrollEnabled && _scrollToItemBoundary)
+        {
+            [self scrollToItemAtIndex:self.currentItemIndex animated:YES];
+        }
     }
 }
 
@@ -2025,22 +2069,29 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
                 [_delegate carouselDidEndDragging:self willDecelerate:_decelerating];
                 [self popAnimationState];
                 
-                if (!_decelerating && (_scrollToItemBoundary || (_scrollOffset - [self clampedOffset:_scrollOffset]) != 0.0f))
+                if (!_decelerating)
                 {
-                    if (fabsf(_scrollOffset - self.currentItemIndex) < 0.01f)
+                    if (_scrollToItemBoundary || (_scrollOffset - [self clampedOffset:_scrollOffset]) != 0.0f)
                     {
-                        //call scroll to trigger events for legacy support reasons
-                        //even though technically we don't need to scroll at all
-                        [self scrollToItemAtIndex:self.currentItemIndex duration:0.01];
-                    }
-                    else if ([self shouldScroll])
-                    {
-                        NSInteger direction = (int)(_startVelocity / fabsf(_startVelocity));
-                        [self scrollToItemAtIndex:self.currentItemIndex + direction animated:YES];
+                        if (fabsf(_scrollOffset - self.currentItemIndex) < 0.01f)
+                        {
+                            //call scroll to trigger events for legacy support reasons
+                            //even though technically we don't need to scroll at all
+                            [self scrollToItemAtIndex:self.currentItemIndex duration:0.01];
+                        }
+                        else if ([self shouldScroll])
+                        {
+                            NSInteger direction = (int)(_startVelocity / fabsf(_startVelocity));
+                            [self scrollToItemAtIndex:self.currentItemIndex + direction animated:YES];
+                        }
+                        else
+                        {
+                            [self scrollToItemAtIndex:self.currentItemIndex animated:YES];
+                        }
                     }
                     else
                     {
-                        [self scrollToItemAtIndex:self.currentItemIndex animated:YES];
+                        [self depthSortViews];
                     }
                 }
                 else
@@ -2121,22 +2172,18 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
         position = [self convertPoint:position fromView:self.window.contentView];
         
         //check for tapped view
-        for (UIView *view in [[[_itemViews allValues] sortedArrayUsingFunction:(NSInteger (*)(id, id, void *))compareViewDepth context:(__bridge void *)self] reverseObjectEnumerator])
+        NSInteger index = [self indexOfItemView:[self itemViewAtPoint:position]];
+        if (index != NSNotFound)
         {
-            if ([view.superview.layer hitTest:position])
+            if (_centerItemWhenSelected && index != self.currentItemIndex)
             {
-                NSInteger index = [self indexOfItemView:view];
-                if (_centerItemWhenSelected && index != self.currentItemIndex)
-                {
-                    [self scrollToItemAtIndex:index animated:YES];
-                }
-                if (!_delegate || [_delegate carousel:self shouldSelectItemAtIndex:index])
-                {
-                    [self pushAnimationState:YES];
-                    [_delegate carousel:self didSelectItemAtIndex:index];
-                    [self popAnimationState];
-                }
-                break;
+                [self scrollToItemAtIndex:index animated:YES];
+            }
+            if (!_delegate || [_delegate carousel:self shouldSelectItemAtIndex:index])
+            {
+                [self pushAnimationState:YES];
+                [_delegate carousel:self didSelectItemAtIndex:index];
+                [self popAnimationState];
             }
         }
     }

@@ -1,7 +1,7 @@
 //
 //  FXImageView.m
 //
-//  Version 1.3.1
+//  Version 1.3.2
 //
 //  Created by Nick Lockwood on 31/10/2011.
 //  Copyright (c) 2011 Charcoal Design
@@ -33,6 +33,12 @@
 #import "FXImageView.h"
 #import "UIImage+FX.h"
 #import <objc/message.h>
+
+
+#pragma GCC diagnostic ignored "-Wobjc-missing-property-synthesis"
+#pragma GCC diagnostic ignored "-Wdirect-ivar-access"
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wgnu"
 
 
 #import <Availability.h>
@@ -82,25 +88,29 @@
 + (NSOperationQueue *)processingQueue
 {
     static NSOperationQueue *sharedQueue = nil;
-    if (sharedQueue == nil)
-    {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
         sharedQueue = [[NSOperationQueue alloc] init];
         [sharedQueue setMaxConcurrentOperationCount:4];
-    }
+    });
+    
     return sharedQueue;
 }
 
 + (NSCache *)processedImageCache
 {
     static NSCache *sharedCache = nil;
-    if (sharedCache == nil)
-    {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
         sharedCache = [[NSCache alloc] init];
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(__unused NSNotification *note) {
             
             [sharedCache removeAllObjects];
         }];
-    }
+    });
+
     return sharedCache;
 }
 
@@ -164,10 +174,10 @@
     NSString *colorString = @"{0.00,0.00}";
     if (color && ![color isEqual:[UIColor clearColor]])
     {
-        NSInteger componentCount = CGColorGetNumberOfComponents(color.CGColor);
+        size_t componentCount = CGColorGetNumberOfComponents(color.CGColor);
         const CGFloat *components = CGColorGetComponents(color.CGColor);
         NSMutableArray *parts = [NSMutableArray arrayWithCapacity:componentCount];
-        for (NSInteger i = 0; i < componentCount; i++)
+        for (size_t i = 0; i < componentCount; i++)
         {
             [parts addObject:[NSString stringWithFormat:@"%.2f", components[i]]];
         }
@@ -178,14 +188,17 @@
 
 - (NSNumber *)imageHash:(UIImage *)image
 {
-    static NSUInteger hashKey = 1;
-    static const char FXImageHash;
-    NSNumber *number = objc_getAssociatedObject(image, (void *)&FXImageHash);
-    if (!number && image)
+    @synchronized([self class])
     {
-        objc_setAssociatedObject(image, (void *)&FXImageHash, @(hashKey++), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        static NSUInteger hashKey = 1;
+        static const void *FXImageHashKey = &FXImageHashKey;
+        NSNumber *number = objc_getAssociatedObject(image, FXImageHashKey);
+        if (!number && image)
+        {
+            objc_setAssociatedObject(image, FXImageHashKey, @(hashKey++), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        }
+        return number;
     }
-    return number;
 }
 
 - (NSString *)cacheKey
@@ -474,7 +487,7 @@
 
 - (void)setReflectionGap:(CGFloat)reflectionGap
 {
-    if (_reflectionGap != reflectionGap)
+    if (fabs(_reflectionGap - reflectionGap) > 0.001)
     {
         _reflectionGap = reflectionGap;
         [self setNeedsLayout];
@@ -483,7 +496,7 @@
 
 - (void)setReflectionScale:(CGFloat)reflectionScale
 {
-    if (_reflectionScale != reflectionScale)
+    if (fabs(_reflectionScale - reflectionScale) > 0.001)
     {
         _reflectionScale = reflectionScale;
         [self setNeedsLayout];
@@ -492,7 +505,7 @@
 
 - (void)setReflectionAlpha:(CGFloat)reflectionAlpha
 {
-    if (_reflectionAlpha != reflectionAlpha)
+    if (fabs(_reflectionAlpha - reflectionAlpha) > 0.001)
     {
         _reflectionAlpha = reflectionAlpha;
         [self setNeedsLayout];
@@ -519,7 +532,7 @@
 
 - (void)setShadowBlur:(CGFloat)shadowBlur
 {
-    if (_shadowBlur != shadowBlur)
+    if (fabs(_shadowBlur - shadowBlur) > 0.001)
     {
         _shadowBlur = shadowBlur;
         [self setNeedsLayout];

@@ -105,7 +105,7 @@ This is the shared NSCache used to cache processed FXImageView images for reuse.
 
 
 FXImageView methods
-------------------
+--------------------
 
     - (void)setImage:(UIImage *)image;
     
@@ -121,7 +121,7 @@ This method sets the image by loading it from the specified URL. If the `asynchr
 
 
 FXImageView properties
-----------------
+-----------------------
 
     @property (nonatomic, assign, getter = isAsynchronous) BOOL asynchronous;
     
@@ -129,7 +129,7 @@ The shadow and reflection effects take time to render. In many cases this will b
 
     @property (nonatomic, assign) NSTimeInterval crossfadeDuration;
 
-This porperty controls the duration of the crossfade animation when the image finishes processing and is displayed, measured in seconds. The default duration is 0.25. Set the duration to zero to disable the crossfade altogether.
+This property controls the duration of the crossfade animation when the image finishes processing and is displayed, measured in seconds. The default duration is 0.25. Set the duration to zero to disable the crossfade altogether.
     
     @property (nonatomic, assign) CGFloat reflectionGap;
     
@@ -174,3 +174,67 @@ If you want to apply a custom effect to your image, you can do your custom drawi
     @property (nonatomic, copy) NSString *cacheKey;
     
 FXImageView caches processed images based on the image object or URL that you specify, combined with the specific set of effects you've selected. This mechanism works effectively in most cases, but for image objects that are generated on the fly, or ones that are loaded from the ALAssets library, you don't get any benefit from the caching because the same image objects are never used twice. In these cases you can improve performance by using a custom cache key. The key can be any string, the only requirement is that is should be unique for each unique image & effects combination that you use with FXImageView. If you are displaying your images in a carousel, a string based on the carousel item index would be a good choice for the cache key. Set the cacheKey property to nil to revert to the default cache key calculation.
+
+
+Release notes
+----------------
+
+Version 1.3.2
+
+- Now complies with -Weverything warning level
+- Fixed KVO example
+
+Version 1.3.1
+
+- Added QuartzCore import to fix podspecs issue
+
+Version 1.3
+
+- Added crossfadeDuration property to control or disable crossfade effect
+- Now requires ARC
+- Now complies with -Wall and -Wextra warning levels
+- Cache is now cleared in the event of a low-memory warning
+
+Version 1.2.3
+
+- Fixed potential crash when using custom effects block
+- Replaced customEffectsIdentifier property with more generally useful cacheKey
+- Fixed a compiler warning in UIImage+FX category
+
+Version 1.2.2
+
+- Fixed some additional caching bugs
+- FXImageView is now KVO-compliant for the image and processedImage properties
+- Added KVO example
+
+Version 1.2.1
+
+- Removed setWithBlock: method due to unresolvable caching issue
+- Added some additional UIImage+FX methods
+- Fixed some caching bugs
+
+Version 1.2
+
+- Added corner radius clipping effect
+- Added custom effects block property for applying custom effects
+- Added setWithContentsOfFile/URL: methods for dynamic loading/downloading
+- Added setWithBlock: method for dynamic image generation or loading logic
+
+Version 1.1.2
+
+- Fixed potential crash when processingQueue maxConcurrentOperationCount is set to -1 (unlimited)
+- Added Advanced Example
+
+Version 1.1.1
+
+- Performance improvements
+
+Version 1.1
+
+- Added LIFO queuing for process operations
+- Added caching for processed images
+- Fixed some bugs
+
+Version 1.0
+
+- Initial release

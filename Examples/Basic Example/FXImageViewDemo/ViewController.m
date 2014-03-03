@@ -10,18 +10,16 @@
 
 @implementation ViewController
 
-@synthesize imageView = _imageView;
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	
-    _imageView.reflectionScale = 0.5f;
-    _imageView.reflectionAlpha = 0.25f;
-    _imageView.reflectionGap = 10.0f;
-    _imageView.shadowOffset = CGSizeMake(0.0f, 2.0f);
-    _imageView.shadowBlur = 5.0f;
-    _imageView.cornerRadius = 10.0f;
+    self.imageView.reflectionScale = 0.5f;
+    self.imageView.reflectionAlpha = 0.25f;
+    self.imageView.reflectionGap = 10.0f;
+    self.imageView.shadowOffset = CGSizeMake(0.0f, 2.0f);
+    self.imageView.shadowBlur = 5.0f;
+    self.imageView.cornerRadius = 10.0f;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

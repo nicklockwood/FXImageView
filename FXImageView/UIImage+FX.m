@@ -1,7 +1,7 @@
 //
 //  UIImage+FX.m
 //
-//  Version 1.3.1
+//  Version 1.3.2
 //
 //  Created by Nick Lockwood on 31/10/2011.
 //  Copyright (c) 2011 Charcoal Design
@@ -31,6 +31,10 @@
 //
 
 #import "UIImage+FX.h"
+
+
+#pragma GCC diagnostic ignored "-Wconversion"
+
 
 @implementation UIImage (FX)
 
@@ -182,8 +186,9 @@
         {
             rect = CGRectMake(size.width - self.size.width, size.height - self.size.height, self.size.width, self.size.height);
             break;
-        }  
-        default:
+        }
+        case UIViewContentModeRedraw:
+        case UIViewContentModeScaleToFill:
         {
             rect = CGRectMake(0.0f, 0.0f, size.width, size.height);
             break;
