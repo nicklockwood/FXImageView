@@ -1,7 +1,7 @@
 //
 //  FXImageView.h
 //
-//  Version 1.3.2
+//  Version 1.3.3
 //
 //  Created by Nick Lockwood on 31/10/2011.
 //  Copyright (c) 2011 Charcoal Design
@@ -52,6 +52,7 @@
 @property (nonatomic, assign) CGFloat shadowBlur;
 @property (nonatomic, assign) CGFloat cornerRadius;
 @property (nonatomic, strong) UIImage *processedImage;
+@property (nonatomic, assign) UIViewContentMode contentMode;
 
 @property (nonatomic, copy) UIImage *(^customEffectsBlock)(UIImage *image);
 @property (nonatomic, copy) NSString *cacheKey;

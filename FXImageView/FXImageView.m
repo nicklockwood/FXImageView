@@ -1,7 +1,7 @@
 //
 //  FXImageView.m
 //
-//  Version 1.3.2
+//  Version 1.3.3
 //
 //  Created by Nick Lockwood on 31/10/2011.
 //  Copyright (c) 2011 Charcoal Design
@@ -57,7 +57,6 @@
 @interface FXImageView ()
 
 @property (nonatomic, strong) UIImage *originalImage;
-@property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) NSURL *imageContentURL;
 
 - (void)processImage;
@@ -81,6 +80,7 @@
 @implementation FXImageView
 
 @synthesize cacheKey = _cacheKey;
+@synthesize contentMode = _contentMode;
 
 #pragma mark -
 #pragma mark Shared storage
@@ -122,10 +122,8 @@
 {
     self.shadowColor = [UIColor blackColor];
     _crossfadeDuration = 0.25;
-    _imageView = [[UIImageView alloc] initWithFrame:self.bounds];
-    _imageView.contentMode = UIViewContentModeCenter;
-    [self addSubview:_imageView];
-    [self setImage:super.image];
+    super.contentMode = UIViewContentModeCenter;
+    self.image = super.image;
     super.image = nil;
 }
 
@@ -156,22 +154,18 @@
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
+- (void)awakeFromNib
 {
-    if ((self = [super initWithCoder:aDecoder]))
-    {
-        [self setUp];
-    }
-    return self;
+    [super awakeFromNib];
+    [self setUp];
 }
-
 
 #pragma mark -
 #pragma mark Caching
 
 - (NSString *)colorHash:(UIColor *)color
 {
-    NSString *colorString = @"{0.00,0.00}";
+    NSString *colorString = @"{0.00, 0.00}";
     if (color && ![color isEqual:[UIColor clearColor]])
     {
         size_t componentCount = CGColorGetNumberOfComponents(color.CGColor);
@@ -181,7 +175,7 @@
         {
             [parts addObject:[NSString stringWithFormat:@"%.2f", components[i]]];
         }
-        colorString = [NSString stringWithFormat:@"{%@}", [parts componentsJoinedByString:@","]];
+        colorString = [NSString stringWithFormat:@"{%@}", [parts componentsJoinedByString:@", "]];
     }
     return colorString;
 }
@@ -256,9 +250,7 @@
             }
 
             //set processed image
-            [self willChangeValueForKey:@"processedImage"];
-            _imageView.image = processedImage ?: _imageView.image;
-            [self didChangeValueForKey:@"processedImage"];
+            [self setProcessedImageInternal:processedImage];
         }
     }
 }
@@ -352,9 +344,7 @@
         {
             [self cacheProcessedImage:processedImage forKey:cacheKey];
         }
-        [self willChangeValueForKey:@"processedImage"];
-        _imageView.image = processedImage ?: _imageView.image;
-        [self didChangeValueForKey:@"processedImage"];
+        [self setProcessedImageInternal:processedImage];
     }
     else
     {
@@ -426,9 +416,7 @@
     if (processedImage)
     {
         //use cached version
-        [self willChangeValueForKey:@"processedImage"];
-        _imageView.image = ([processedImage isKindOfClass:[NSNull class]])? nil: processedImage;
-        [self didChangeValueForKey:@"processedImage"];
+        [self setProcessedImageInternal:[processedImage isKindOfClass:[NSNull class]]? nil: processedImage];
     }
     else if (_asynchronous)
     {
@@ -444,7 +432,7 @@
 
 - (void)layoutSubviews
 {
-    _imageView.frame = self.bounds;
+    [super layoutSubviews];
     if (_imageContentURL || self.image)
     {
         [self updateProcessedImage];
@@ -455,18 +443,25 @@
 #pragma mark -
 #pragma mark Setters and getters
 
-- (UIImage *)processedImage
-{
-    return _imageView.image;
-}
-
-- (void)setProcessedImage:(UIImage *)image
+- (void)setProcessedImage:(UIImage *)processedImage
 {
     self.imageContentURL = nil;
-    [self willChangeValueForKey:@"image"];
-    self.originalImage = nil;
-    [self didChangeValueForKey:@"image"];
-    _imageView.image = image;
+    if (self.originalImage)
+    {
+        [self willChangeValueForKey:@"image"];
+        self.originalImage = nil;
+        [self didChangeValueForKey:@"image"];
+    }
+    [self setProcessedImageInternal:processedImage];
+}
+
+- (void)setProcessedImageInternal:(UIImage *)processedImage
+{
+    [self willChangeValueForKey:@"processedImage"];
+    _processedImage = processedImage;
+    self.layer.contentsScale = processedImage.scale;
+    self.layer.contents = (id)_processedImage.CGImage;
+    [self didChangeValueForKey:@"processedImage"];
 }
 
 - (UIImage *)image
@@ -539,11 +534,20 @@
     }
 }
 
+- (void)setCornerRadius:(CGFloat)cornerRadius
+{
+    if (fabs(_cornerRadius - cornerRadius) > 0.001)
+    {
+        _cornerRadius = cornerRadius;
+        [self setNeedsLayout];
+    }
+}
+
 - (void)setContentMode:(UIViewContentMode)contentMode
 {
-    if (self.contentMode != contentMode)
+    if (_contentMode != contentMode)
     {
-        super.contentMode = contentMode;
+        _contentMode = contentMode;
         [self setNeedsLayout];
     }
 }

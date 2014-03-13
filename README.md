@@ -9,7 +9,7 @@ As a bonus, FXImageView includes a standalone UIImage category for cropping, sca
 Supported iOS & SDK Versions
 -----------------------------
 
-* Supported build target - iOS 7.0 (Xcode 5.0, Apple LLVM compiler 5.0)
+* Supported build target - iOS 7.1 (Xcode 5.1, Apple LLVM compiler 5.1)
 * Earliest supported deployment target - iOS 5.0
 * Earliest compatible deployment target - iOS 4.3
 
@@ -178,6 +178,11 @@ FXImageView caches processed images based on the image object or URL that you sp
 
 Release notes
 ----------------
+
+Version 1.3.3
+
+- Fixed rendering bug on iOS 7.1
+- No longer uses internal UIImageView
 
 Version 1.3.2
 
