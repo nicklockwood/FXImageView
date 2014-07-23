@@ -400,7 +400,16 @@
     operation.target = self;
     
     //set operation thread priority
-    [operation setThreadPriority:1.0];
+    if ([operation respondsToSelector:@selector(setQueuePriority:)] && [operation respondsToSelector:@selector(setQualityOfService:)]) {
+        [operation setQueuePriority:NSOperationQueuePriorityHigh];
+        [operation setQualityOfService:NSQualityOfServiceUserInitiated];
+    } else {
+        // use older API
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        [operation setThreadPriority:1.0];
+#pragma clang diagnostic pop
+    }
     
     //queue operation
     [self queueProcessingOperation:operation];
