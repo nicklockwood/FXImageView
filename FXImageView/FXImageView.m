@@ -399,17 +399,21 @@
     FXImageOperation *operation = [[FXImageOperation alloc] init];
     operation.target = self;
     
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
     //set operation thread priority
     if ([operation respondsToSelector:@selector(setQueuePriority:)] && [operation respondsToSelector:@selector(setQualityOfService:)]) {
         [operation setQueuePriority:NSOperationQueuePriorityHigh];
         [operation setQualityOfService:NSQualityOfServiceUserInitiated];
     } else {
+#endif
         // use older API
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
         [operation setThreadPriority:1.0];
 #pragma clang diagnostic pop
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
     }
+#endif
     
     //queue operation
     [self queueProcessingOperation:operation];
