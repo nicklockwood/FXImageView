@@ -218,6 +218,8 @@
     
     //create drawing context
 	UIGraphicsBeginImageContextWithOptions(size, NO, 0.0f);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
     
     //draw
     [self drawInRect:rect];
