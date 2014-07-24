@@ -64,6 +64,8 @@
     
     //create drawing context
 	UIGraphicsBeginImageContextWithOptions(size, NO, 0.0f);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
     
     //draw
     [self drawInRect:CGRectMake(0.0f, 0.0f, size.width, size.height)];
@@ -218,6 +220,8 @@
     
     //create drawing context
 	UIGraphicsBeginImageContextWithOptions(size, NO, 0.0f);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
     
     //draw
     [self drawInRect:rect];
@@ -263,6 +267,7 @@
 	//create drawing context
 	UIGraphicsBeginImageContextWithOptions(size, NO, 0.0f);
 	CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
 	
 	//clip to gradient
 	CGContextClipToMask(context, bounds, [[self class] gradientMask]);
@@ -288,6 +293,8 @@
     
     //create drawing context
 	UIGraphicsBeginImageContextWithOptions(CGSizeMake(self.size.width, self.size.height + reflectionOffset * 2.0f), NO, 0.0f);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
     
     //draw reflection
     [reflection drawAtPoint:CGPointMake(0.0f, reflectionOffset + self.size.height + gap) blendMode:kCGBlendModeNormal alpha:alpha];
@@ -312,6 +319,7 @@
     //create drawing context
 	UIGraphicsBeginImageContextWithOptions(size, NO, 0.0f);
     CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
     
     //set up shadow
     CGContextSetShadowWithColor(context, offset, blur, color.CGColor);
@@ -331,6 +339,8 @@
 {
     //create drawing context
 	UIGraphicsBeginImageContextWithOptions(self.size, NO, 0.0f);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
     
     //clip image
     [[UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, self.size.width, self.size.height) cornerRadius:radius] addClip];
