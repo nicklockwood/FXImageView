@@ -402,9 +402,8 @@
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
   
     //set operation thread priority
-    if ([operation respondsToSelector:@selector(setQueuePriority:)])
+    if ([operation respondsToSelector:@selector(setQualityOfService:)])
     {
-        [operation setQueuePriority:NSOperationQueuePriorityHigh];
         [operation setQualityOfService:NSQualityOfServiceUtility];
     }
     else
