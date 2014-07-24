@@ -400,21 +400,21 @@
     operation.target = self;
     
     //set operation thread priority
-#ifdef __IPHONE_OS_VERSION_MAX_REQUIRED
-#if __IPHONE_OS_VERSION_MAX_REQUIRED < 80000
-    // before ios8
-    [operation setThreadPriority:1.0];
-#else
-    // >= ios8
-    if ([operation respondsToSelector:@selector(setQueuePriority:)] && [operation respondsToSelector:@selector(setQualityOfService:)]) {
+    if ([operation respondsToSelector:@selector(setQueuePriority:)])
+    {
         [operation setQueuePriority:NSOperationQueuePriorityHigh];
-        [operation setQualityOfService:NSQualityOfServiceUserInitiated];
-    } else {
+        [operation setQualityOfService:NSQualityOfServiceUtility];
+    }
+  
+#if __IPHONE_OS_VERSION_MAX_ALLOWED < 80000
+  
+    else
+    {
         [operation setThreadPriority:1.0];
     }
+  
 #endif
-#endif
-    
+  
     //queue operation
     [self queueProcessingOperation:operation];
 }
