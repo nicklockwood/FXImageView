@@ -398,22 +398,28 @@
     //create processing operation
     FXImageOperation *operation = [[FXImageOperation alloc] init];
     operation.target = self;
-    
+  
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+  
     //set operation thread priority
     if ([operation respondsToSelector:@selector(setQueuePriority:)])
     {
         [operation setQueuePriority:NSOperationQueuePriorityHigh];
         [operation setQualityOfService:NSQualityOfServiceUtility];
     }
-  
-#if __IPHONE_OS_VERSION_MAX_ALLOWED < 80000
-  
     else
-    {
-        [operation setThreadPriority:1.0];
-    }
-  
+      
 #endif
+      
+    {
+  
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 80000
+  
+        [operation setThreadPriority:1.0];
+
+#endif
+      
+    }
   
     //queue operation
     [self queueProcessingOperation:operation];
