@@ -399,25 +399,34 @@
     FXImageOperation *operation = [[FXImageOperation alloc] init];
     operation.target = self;
   
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-  
     //set operation thread priority
-    if ([operation respondsToSelector:@selector(setQualityOfService:)])
-    {
-        [operation setQualityOfService:NSQualityOfServiceUtility];
-    }
-    else
-      
-#endif
-      
-    {
   
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < 80000
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
   
-        [operation setThreadPriority:1.0];
-
+    if (![operation respondsToSelector:@selector(setQualityOfService:)])
+    {
+      
 #endif
       
+        [operation setThreadPriority:1.0];
+      
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+      
+    }
+    else
+
+#endif
+#endif
+      
+    {
+  
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+  
+        [operation setQualityOfService:NSQualityOfServiceUtility];
+      
+#endif
+
     }
   
     //queue operation
