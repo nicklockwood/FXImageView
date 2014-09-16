@@ -37,12 +37,12 @@
     _carousel.type = iCarouselTypeCoverFlow2;
 }
 
-- (NSUInteger)numberOfItemsInCarousel:(__unused iCarousel *)carousel
+- (NSInteger)numberOfItemsInCarousel:(__unused iCarousel *)carousel
 {
     return [_imagePaths count];
 }
 
-- (UIView *)carousel:(__unused  iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view
+- (UIView *)carousel:(__unused  iCarousel *)carousel viewForItemAtIndex:(NSInteger)index reusingView:(UIView *)view
 {
     //create new view if no view is available for recycling
     if (view == nil)
