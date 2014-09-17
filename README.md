@@ -179,6 +179,10 @@ FXImageView caches processed images based on the image object or URL that you sp
 Release notes
 ----------------
 
+Version 1.3.5
+
+- Fixed a bug where setting the highlighted property of the FXImageView would break it (this could happen if FXImageView was placed inside a UICollectionViewCell)
+
 Version 1.3.4
 
 - Fixed a bug where FXImageViews could lose their styling under some circumstances
