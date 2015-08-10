@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6C55C7FD1B783E31006A7440"
-               BuildableName = "FXImageView.framework"
-               BlueprintName = "FXImageView"
-               ReferencedContainer = "container:FXImageView.xcodeproj">
+               BuildableName = "FXImage.framework"
+               BlueprintName = "FXImage"
+               ReferencedContainer = "container:FXImage.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,9 +46,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6C55C7FD1B783E31006A7440"
-            BuildableName = "FXImageView.framework"
-            BlueprintName = "FXImageView"
-            ReferencedContainer = "container:FXImageView.xcodeproj">
+            BuildableName = "FXImage.framework"
+            BlueprintName = "FXImage"
+            ReferencedContainer = "container:FXImage.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -64,9 +64,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6C55C7FD1B783E31006A7440"
-            BuildableName = "FXImageView.framework"
-            BlueprintName = "FXImageView"
-            ReferencedContainer = "container:FXImageView.xcodeproj">
+            BuildableName = "FXImage.framework"
+            BlueprintName = "FXImage"
+            ReferencedContainer = "container:FXImage.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

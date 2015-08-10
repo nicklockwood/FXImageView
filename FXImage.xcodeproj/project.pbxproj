@@ -11,17 +11,17 @@
 		6C55C80E1B783E9C006A7440 /* FXImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C55C80A1B783E9C006A7440 /* FXImageView.m */; };
 		6C55C80F1B783E9C006A7440 /* UIImage+FX.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C55C80B1B783E9C006A7440 /* UIImage+FX.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C55C8101B783E9C006A7440 /* UIImage+FX.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C55C80C1B783E9C006A7440 /* UIImage+FX.m */; };
-		6C55C8121B783EC6006A7440 /* ImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C55C8111B783EC3006A7440 /* ImageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C55C8121B783EC6006A7440 /* FXImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C55C8111B783EC3006A7440 /* FXImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		6C55C7FE1B783E31006A7440 /* FXImageView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FXImageView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6C55C7FE1B783E31006A7440 /* FXImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FXImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C55C8031B783E31006A7440 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6C55C8091B783E9C006A7440 /* FXImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXImageView.h; sourceTree = "<group>"; };
 		6C55C80A1B783E9C006A7440 /* FXImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXImageView.m; sourceTree = "<group>"; };
 		6C55C80B1B783E9C006A7440 /* UIImage+FX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+FX.h"; sourceTree = "<group>"; };
 		6C55C80C1B783E9C006A7440 /* UIImage+FX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+FX.m"; sourceTree = "<group>"; };
-		6C55C8111B783EC3006A7440 /* ImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageView.h; sourceTree = "<group>"; };
+		6C55C8111B783EC3006A7440 /* FXImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FXImage.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,7 +47,7 @@
 		6C55C7FF1B783E31006A7440 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6C55C7FE1B783E31006A7440 /* FXImageView.framework */,
+				6C55C7FE1B783E31006A7440 /* FXImage.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -59,7 +59,7 @@
 				6C55C80A1B783E9C006A7440 /* FXImageView.m */,
 				6C55C80B1B783E9C006A7440 /* UIImage+FX.h */,
 				6C55C80C1B783E9C006A7440 /* UIImage+FX.m */,
-				6C55C8111B783EC3006A7440 /* ImageView.h */,
+				6C55C8111B783EC3006A7440 /* FXImage.h */,
 			);
 			path = FXImageView;
 			sourceTree = "<group>";
@@ -72,7 +72,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6C55C80F1B783E9C006A7440 /* UIImage+FX.h in Headers */,
-				6C55C8121B783EC6006A7440 /* ImageView.h in Headers */,
+				6C55C8121B783EC6006A7440 /* FXImage.h in Headers */,
 				6C55C80D1B783E9C006A7440 /* FXImageView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -80,9 +80,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		6C55C7FD1B783E31006A7440 /* FXImageView */ = {
+		6C55C7FD1B783E31006A7440 /* FXImage */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6C55C8061B783E31006A7440 /* Build configuration list for PBXNativeTarget "FXImageView" */;
+			buildConfigurationList = 6C55C8061B783E31006A7440 /* Build configuration list for PBXNativeTarget "FXImage" */;
 			buildPhases = (
 				6C55C7F91B783E31006A7440 /* Sources */,
 				6C55C7FA1B783E31006A7440 /* Frameworks */,
@@ -93,9 +93,9 @@
 			);
 			dependencies = (
 			);
-			name = FXImageView;
+			name = FXImage;
 			productName = FXImageView;
-			productReference = 6C55C7FE1B783E31006A7440 /* FXImageView.framework */;
+			productReference = 6C55C7FE1B783E31006A7440 /* FXImage.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -112,7 +112,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 6C55C7F81B783E31006A7440 /* Build configuration list for PBXProject "FXImageView" */;
+			buildConfigurationList = 6C55C7F81B783E31006A7440 /* Build configuration list for PBXProject "FXImage" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -124,7 +124,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6C55C7FD1B783E31006A7440 /* FXImageView */,
+				6C55C7FD1B783E31006A7440 /* FXImage */,
 			);
 		};
 /* End PBXProject section */
@@ -250,7 +250,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nicklockwood.FXImageView;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nicklockwood.FXImage;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -266,7 +266,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nicklockwood.FXImageView;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nicklockwood.FXImage;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -275,7 +275,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6C55C7F81B783E31006A7440 /* Build configuration list for PBXProject "FXImageView" */ = {
+		6C55C7F81B783E31006A7440 /* Build configuration list for PBXProject "FXImage" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6C55C8041B783E31006A7440 /* Debug */,
@@ -284,7 +284,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6C55C8061B783E31006A7440 /* Build configuration list for PBXNativeTarget "FXImageView" */ = {
+		6C55C8061B783E31006A7440 /* Build configuration list for PBXNativeTarget "FXImage" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6C55C8071B783E31006A7440 /* Debug */,
