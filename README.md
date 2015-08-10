@@ -35,6 +35,17 @@ The UIImage(FX) category methods are all thread-safe and may safely be called co
 Installation
 ---------------
 
+### Carthage
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+
+FXImageView is fully Carthage compatible. To include it, build you project with Carthage, then drag **./Carthage/Build/iOS/FXImageView.framework** into you project and add this import:
+
+```objectivec
+#import <FXImageView/ImageView.h>
+```
+
+### Manual
+
 To use FXImageView, just drag the class files into your project. You can create FXImageViews programatically, or create them in Interface Builder by dragging an ordinary UIImageView into your view and setting its class to FXImageView.
 
 
