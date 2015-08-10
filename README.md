@@ -41,7 +41,7 @@ Installation
 FXImageView is fully Carthage compatible. To include it, build you project with Carthage, then drag **./Carthage/Build/iOS/FXImageView.framework** into you project and add this import:
 
 ```objectivec
-#import <FXImageView/ImageView.h>
+#import <FXImage/Image.h>
 ```
 
 ### Manual
