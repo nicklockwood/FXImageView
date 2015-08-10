@@ -14,5 +14,5 @@ FOUNDATION_EXPORT double imageViewVersionNumber;
 //! Project version string for FXimageView.
 FOUNDATION_EXPORT const unsigned char imageViewVersionString[];
 
-#import <FXImageView/FXImageView.h>
-#import <FXImageView/UIImage+FX.h>
+#import <FXImage/FXImageView.h>
+#import <FXImage/UIImage+FX.h>
