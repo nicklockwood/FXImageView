@@ -324,7 +324,7 @@
             if (shadowColor && ![shadowColor isEqual:[UIColor clearColor]] &&
                 (shadowBlur || !CGSizeEqualToSize(shadowOffset, CGSizeZero)))
             {
-                reflectionGap -= 2.0f * (fabsf(shadowOffset.height) + shadowBlur);
+                reflectionGap -= 2.0f * (fabs(shadowOffset.height) + shadowBlur);
                 processedImage = [processedImage imageWithShadowColor:shadowColor
                                                                offset:shadowOffset
                                                                  blur:shadowBlur];
