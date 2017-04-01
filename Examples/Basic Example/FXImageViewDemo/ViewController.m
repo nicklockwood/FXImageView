@@ -14,19 +14,12 @@
 {
     [super viewDidLoad];
 	
-    self.imageView.reflectionScale = 0.5f;
-    self.imageView.reflectionAlpha = 0.25f;
-    self.imageView.reflectionGap = 10.0f;
-    self.imageView.shadowOffset = CGSizeMake(0.0f, 2.0f);
-    self.imageView.shadowBlur = 5.0f;
-    self.imageView.cornerRadius = 10.0f;
+    self.imageView.reflectionScale = 0.5;
+    self.imageView.reflectionAlpha = 0.25;
+    self.imageView.reflectionGap = 10.0;
+    self.imageView.shadowOffset = CGSizeMake(0.0, 2.0);
+    self.imageView.shadowBlur = 5.0;
+    self.imageView.cornerRadius = 10.0;
 }
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
-    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-}
-
 
 @end

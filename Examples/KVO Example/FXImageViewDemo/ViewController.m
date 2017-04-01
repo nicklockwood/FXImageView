@@ -15,12 +15,12 @@
     [super viewDidLoad];
 	
     //configure image effects
-    self.imageView.reflectionScale = 0.5f;
-    self.imageView.reflectionAlpha = 0.25f;
-    self.imageView.reflectionGap = 10.0f;
-    self.imageView.shadowOffset = CGSizeMake(0.0f, 2.0f);
-    self.imageView.shadowBlur = 5.0f;
-    self.imageView.cornerRadius = 10.0f;
+    self.imageView.reflectionScale = 0.5;
+    self.imageView.reflectionAlpha = 0.25;
+    self.imageView.reflectionGap = 10.0;
+    self.imageView.shadowOffset = CGSizeMake(0.0, 2.0);
+    self.imageView.shadowBlur = 5.0;
+    self.imageView.cornerRadius = 10.0;
     self.imageView.asynchronous = YES;
     
     //observe image updates
@@ -38,7 +38,7 @@
         [self.activityView stopAnimating];
         self.successLabel.text = @"Download Complete";
         self.button.enabled = YES;
-        self.button.alpha = 1.0f;
+        self.button.alpha = 1.0;
     }
 }
 
@@ -49,7 +49,7 @@
     self.successLabel.text = nil;
     [self.activityView startAnimating];
     self.button.enabled = NO;
-    self.button.alpha = 0.25f;
+    self.button.alpha = 0.25;
     
     //clear cache
     [[FXImageView processedImageCache] removeAllObjects];
